@@ -5,6 +5,7 @@ from tkinter.ttk import *
 class Window1:  # This window is for all the HOTEL ROOMS
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("HOTEL ROOMS")
         label = Label(window, text="Rooms").grid(row=0, column=0)
         # take the data
@@ -23,9 +24,13 @@ class Window1:  # This window is for all the HOTEL ROOMS
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c+1))
         window.pack()
         # Create labels, entries,buttons
+        window_two_button = Button(master, text="Window 2", command=self.button_click)
+        window_two_button.pack()
 
     def button_click(self):
-        pass
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
         # If button is clicked, run this method and open window 2
 
 
