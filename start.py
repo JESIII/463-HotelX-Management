@@ -74,6 +74,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
 class Window2:  # This window is for the 7-DAY LIST!
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("7-DAY LIST")
         currRows = 0
         label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
@@ -149,6 +150,7 @@ class Window2:  # This window is for the 7-DAY LIST!
 class Window3:  # This window is for RESERVATION!
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("RESERVATIONS")
         currRows = 0
         Label(window, text="Reservations", background="pink",anchor='w').grid(row=0, column=0)
@@ -221,6 +223,7 @@ class Window3:  # This window is for RESERVATION!
 class Window4:  # This window is for HOUSEKEEPING!
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("HOUSEKEEPING")
         label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
         currRows = 0
@@ -288,6 +291,7 @@ class Window4:  # This window is for HOUSEKEEPING!
 class Window5:  # This window is for GUEST PROFILE!
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("GUEST PROFILE")
         label = Label(window, text="Guest", background="pink",anchor='w').grid(row=0, column=0)
         lst = [('First Name', 'Last Name', 'Phone', 'Address', 'E-mail',  'ID Info (State, ID#)', 'Vehicle License Plate'),
@@ -350,6 +354,7 @@ class Window5:  # This window is for GUEST PROFILE!
 class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("GUEST'S CURRENT STAY INFO")
         label = Label(window, text="Guests", background="pink",anchor='w').grid(row=0, column=0)
         # take the data
@@ -416,6 +421,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
 class Window7:  # This window is for GUEST SEARCH!
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("GUEST SEARCH")
         currRows = 0 
         label = Label(window, text="Search", background="pink",anchor='w').grid(row=0, column=0)
@@ -479,6 +485,7 @@ class Window7:  # This window is for GUEST SEARCH!
 class Window8:  # This window is for DAILY REPORT!
     def __init__(self, master):
         window = Frame(master)
+        self.master = master
         master.title("DAILY REPORT")
         currRows = 0
         label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
