@@ -8,7 +8,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
         window = Frame(master)
         self.master = master
         master.title("HOTEL ROOMS")
-        label = Label(window, text="Rooms",anchor='W').grid(row=0, column=0)
+        label = Label(window, text="Rooms",anchor='w').grid(row=0, column=0)
         Label(window, text="Room #").grid(row=1, column=0)
         Label(window, text="Status").grid(row=1, column=1)
         # take the data
@@ -51,7 +51,7 @@ class Window2:  # This window is for the 7-DAY LIST!
     def __init__(self, master):
         window = Frame(master)
         master.title("7-DAY LIST")
-        label = Label(window, text="Rooms", background="pink",anchor='W').grid(row=0, column=0)
+        label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
         Label(window, text="--Occupant--", background="pink").grid(row=0, column=4)
         Label(window, text="Room #", background="pink").grid(row=1, column=0)
         Label(window, text="Monday", background="pink").grid(row=1, column=1)
@@ -250,7 +250,7 @@ class Window8:  # This window is for DAILY REPORT!
 
 def main():  # run mainloop
     root = tk.Tk()
-    app = Window5(root)
+    app = Window1(root)
     root.mainloop()
 
 
