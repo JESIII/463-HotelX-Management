@@ -8,6 +8,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
         window = Frame(master)
         self.master = master
         master.title("HOTEL ROOMS")
+        currRows = 0
         label = Label(window, text="Rooms",anchor='w').grid(row=0, column=0)
         Label(window, text="Room #").grid(row=1, column=0)
         Label(window, text="Status").grid(row=1, column=1)
@@ -25,32 +26,56 @@ class Window1:  # This window is for all the HOTEL ROOMS
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
-        window.pack()
+                currRows = r+2
         # Create labels, entries,buttons
-        window_two_button = Button(master, text="Window 2", command=self.button_click)
-        window_two_button.pack()
-
-    def button_click(self):
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        window.pack()
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
         new_master = tk.Tk()
         self.master.destroy()
         Window2(new_master)
-        # If button is clicked, run this method and open window 2
-
-
-class WindowTest:
-    def __init__(self, master):
-        x = 0
-
-    # create buttons,entries,etc
-    def button_method(self):
-        # run this when button click to close window
+    def button_click3(self):
+        new_master = tk.Tk()
         self.master.destroy()
-
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
+        # If button is clicked, run this method and open window 2
 
 class Window2:  # This window is for the 7-DAY LIST!
     def __init__(self, master):
         window = Frame(master)
         master.title("7-DAY LIST")
+        currRows = 0
         label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
         Label(window, text="--Occupant--", background="pink").grid(row=0, column=4)
         Label(window, text="Room #", background="pink").grid(row=1, column=0)
@@ -75,11 +100,49 @@ class Window2:  # This window is for the 7-DAY LIST!
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
-        window.pack()
+                currRows = r+2
         # Create labels, entries,buttons
-
-    def button_click(self):
-        pass
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        window.pack()
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
+    def button_click3(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
         # If button is clicked, run this method and open window 2
 
 
@@ -87,6 +150,7 @@ class Window3:  # This window is for RESERVATION!
     def __init__(self, master):
         window = Frame(master)
         master.title("RESERVATIONS")
+        currRows = 0
         Label(window, text="Reservations", background="pink",anchor='w').grid(row=0, column=0)
         Label(window, text="First", background="pink").grid(row=1, column=0)
         Label(window, text="Last", background="pink").grid(row=1, column=1)
@@ -109,12 +173,49 @@ class Window3:  # This window is for RESERVATION!
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
+                currRows = r+2
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
         window.pack()
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
+    def button_click3(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
         # Create labels, entries,buttons
-
-    def button_click(self):
-        pass
-        # If button is clicked, run this method and open window 2
 
 
 class Window4:  # This window is for HOUSEKEEPING!
@@ -122,6 +223,7 @@ class Window4:  # This window is for HOUSEKEEPING!
         window = Frame(master)
         master.title("HOUSEKEEPING")
         label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
+        currRows = 0
         # take the data
         lst = [('Server', 'Rm#', 'Type', 'Status', 'Bathroom', 'Towels', 'Sheets', 'Vacuum', 'Dusting', 'Electronics'),
             ('', '', '', '', '', '', '', '', '', ''),
@@ -136,12 +238,51 @@ class Window4:  # This window is for HOUSEKEEPING!
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
+                currRows = r+1
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
         window.pack()
         # Create labels, entries,buttons
-
-    def button_click(self):
-        pass
-        # If button is clicked, run this method and open window 2
+        window.pack()
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
+    def button_click3(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
+        # Create labels, entries,buttons
 
 
 class Window5:  # This window is for GUEST PROFILE!
@@ -151,6 +292,7 @@ class Window5:  # This window is for GUEST PROFILE!
         label = Label(window, text="Guest", background="pink",anchor='w').grid(row=0, column=0)
         lst = [('First Name', 'Last Name', 'Phone', 'Address', 'E-mail',  'ID Info (State, ID#)', 'Vehicle License Plate'),
             ('', '', '', '', '', '', '')]
+        currRows = 0
         # find total number of rows and
         # columns in list
         rows = len(lst)
@@ -159,12 +301,50 @@ class Window5:  # This window is for GUEST PROFILE!
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
+                currRows = r+2
         window.pack()
         # Create labels, entries,buttons
-
-    def button_click(self):
-        pass
-        # If button is clicked, run this method and open window 2
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        window.pack()
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
+    def button_click3(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
 
 
 class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
@@ -179,6 +359,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
             ('', '', '', '', '', '', '', '', ''),
             ('', '', '', '', '', '', '', '', ''),
             ('', '', '', '', '', '', '', '', '')]
+        currRows = 0
         # find total number of rows and
         # columns in list
         rows = len(lst)
@@ -187,18 +368,56 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
+                currRows = r+1
         window.pack()
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
         # Create labels, entries,buttons
-
-    def button_click(self):
-        pass
-        # If button is clicked, run this method and open window 2
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
+    def button_click3(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
 
 
 class Window7:  # This window is for GUEST SEARCH!
     def __init__(self, master):
         window = Frame(master)
         master.title("GUEST SEARCH")
+        currRows = 0 
         label = Label(window, text="Search", background="pink",anchor='w').grid(row=0, column=0)
         # take the data
         lst = [('Guest First Name', 'Guest Last Name', 'Room Number', 'Phone Number', 'Street Address', 'Check In Date',
@@ -212,18 +431,56 @@ class Window7:  # This window is for GUEST SEARCH!
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
+                currRows = r+1
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
         window.pack()
         # Create labels, entries,buttons
-
-    def button_click(self):
-        pass
-        # If button is clicked, run this method and open window 2
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
+    def button_click3(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
 
 
 class Window8:  # This window is for DAILY REPORT!
     def __init__(self, master):
         window = Frame(master)
         master.title("DAILY REPORT")
+        currRows = 0
         label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
         # take the data
         lst = [('Room Number', 'Guest Name', 'Date In', 'Date Out (if out)', 'Amount Paid'),
@@ -239,13 +496,51 @@ class Window8:  # This window is for DAILY REPORT!
         for r in range(rows):
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
+                currRows = r+1
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
         window.pack()
         # Create labels, entries,buttons
         # NEED TO GET A SUM OF THE CASH!
-
-    def button_click(self):
-        pass
-        # If button is clicked, run this method and open window 2
+    def button_click1(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
+    def button_click2(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window2(new_master)
+    def button_click3(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master)
+    def button_click4(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master)
+    def button_click5(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master)
+    def button_click6(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window6(new_master)
+    def button_click7(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window7(new_master)
+    def button_click8(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window8(new_master)
+    
 
 
 def main():  # run mainloop
