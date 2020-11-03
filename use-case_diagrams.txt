@@ -1,0 +1,58 @@
+//Code for yUML.me
+//Screen 1
+[Hotel Staff]-(View Rooms List)
+(View Rooms List)>(Show Room #)
+(View Rooms List)>(Show Room Type)
+//Screen 2
+[Hotel Staff]-(View Reservations for next 7 Days)
+(View Reservations for next 7 Days)>(Show Every Room)
+(View Reservations for next 7 Days)>(Show Guest in Room for Each Day)
+//Screen 3
+[Hotel Staff]-(View All Reservations)
+(View All Reservations)>(Show Each Guest)
+(Show Each Guest)>(Show Date Reservation Made)
+(Show Each Guest)>(Show Checkin Date)
+(Show Each Guest)>(Show Checkout Date)
+(Show Each Guest)>(Show Room Type)
+(Show Each Guest)>(Show Website Reservation was Made On)
+(Show Each Guest)>(Show Rate $ per Day)
+(Show Each Guest)>(Show Total Cost $)
+//Screen 4
+[Hotel Staff]-(Manage Housekeeping)
+(Manage Housekeeping)>(Show Each Housekeeper)
+(Manage Housekeeping)>(Show Room Number)
+(Manage Housekeeping)>(Show Room Type)
+(Manage Housekeeping)>(Show Room Status)
+(Manage Housekeeping)>(What Needs to Be Done)
+//Screen 5
+[Hotel Staff]-(View Guest Information)
+(View Guest Information)>(First Name)
+(View Guest Information)>(Last Name)
+(View Guest Information)>(Phone)
+(View Guest Information)>(Address)
+(View Guest Information)>(Email)
+(View Guest Information)>(ID)
+(View Guest Information)>(License Plate)
+//Screen 6
+[Hotel Staff]-(View Current Stay for Guest)
+(View Current Stay for Guest)>(Show Guest Name)
+(View Current Stay for Guest)>(Show Checkin Date & Time)
+(View Current Stay for Guest)>(Show Checkout Date & Time)
+(View Current Stay for Guest)>(Show Room Type)
+(View Current Stay for Guest)>(Show Room #)
+(View Current Stay for Guest)>(Show Rate $ per Day)
+(View Current Stay for Guest)>(Show Payments Made)
+(View Current Stay for Guest)>(Show Balance)
+//Screen 7
+[Hotel Staff]-(Seach for Guest)
+(Seach for Guest)<(Search Field)
+//Screen 8
+[Hotel Staff]-(View Daily Report)
+(View Daily Report)>(Show Rooms Rented)
+(Show Rooms Rented)>(Show Room #)
+(Show Rooms Rented)>(Show Guest Name)
+(Show Rooms Rented)>(Show Checkin Date)
+(Show Rooms Rented)>(Show Checkout Date)
+(Show Rooms Rented)>(Show Total Paid)
+(View Daily Report)>(Show Total Paid for All Rooms)
+
