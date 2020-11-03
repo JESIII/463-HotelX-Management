@@ -38,7 +38,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
 
     def button_click1(self):
@@ -122,7 +122,7 @@ class Window2:  # This window is for the 7-DAY LIST!
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
 
     def button_click1(self):
@@ -203,7 +203,7 @@ class Window3:  # This window is for RESERVATION!
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
 
     def button_click1(self):
@@ -277,7 +277,7 @@ class Window4:  # This window is for HOUSEKEEPING!
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
         # Create labels, entries,buttons
         window.pack()
@@ -351,7 +351,7 @@ class Window5:  # This window is for GUEST PROFILE!
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
 
     def button_click1(self):
@@ -426,7 +426,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         # Create labels, entries,buttons
 
     def button_click1(self):
@@ -497,7 +497,7 @@ class Window7:  # This window is for GUEST SEARCH!
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
         # Create labels, entries,buttons
 
@@ -571,7 +571,7 @@ class Window8:  # This window is for DAILY REPORT!
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
         Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
         # Create labels, entries,buttons
         # NEED TO GET A SUM OF THE CASH!
