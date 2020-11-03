@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.ttk import *
 import datetime as dt
-from PIL import Image
+#from PIL import Image
 import os
 
 
