@@ -89,7 +89,7 @@ class Window2:  # This window is for the 7-DAY LIST!
         self.master = master
         master.title("7-DAY LIST")
         currRows = 0
-        label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
+        label = Label(window, text="Rooms", background="pink", anchor='w').grid(row=0, column=0)
         Label(window, text="--Occupant--", background="pink").grid(row=0, column=4)
         Label(window, text="Room #", background="pink").grid(row=1, column=0)
         Label(window, text="Monday", background="pink").grid(row=1, column=1)
@@ -167,13 +167,27 @@ class Window2:  # This window is for the 7-DAY LIST!
         # If button is clicked, run this method and open window 2
 
 
+class Reservation:  # reservation object for window3, the RESERVATIONS
+    def __init__(self, First, Last, DateMade, CheckIn, CheckOut, RoomType, Website, Rate, TotalCharge):
+        self.First = First
+        self.Last = Last
+        self.DateMade = DateMade
+        self.CheckIn = CheckIn
+        self.CheckOut = CheckOut
+        self.RoomType = RoomType
+        self.Website = Website
+        self.Rate = Rate
+        self.TotalCharge = TotalCharge
+        self.variableArray = [self.First, self.Last, self.DateMade, self.CheckIn, self.CheckOut, self.RoomType,
+                              self.Website, self.Rate, self.TotalCharge]
+
+
 class Window3:  # This window is for RESERVATION!
     def __init__(self, master):
         window = Frame(master)
         self.master = master
         master.title("RESERVATIONS")
-        currRows = 0
-        Label(window, text="Reservations", background="pink",anchor='w').grid(row=0, column=0)
+        Label(window, text="Reservations", background="pink", anchor='w').grid(row=0, column=0)
         Label(window, text="First", background="pink").grid(row=1, column=0)
         Label(window, text="Last", background="pink").grid(row=1, column=1)
         Label(window, text="Date Made", background="pink").grid(row=1, column=2)
@@ -184,18 +198,22 @@ class Window3:  # This window is for RESERVATION!
         Label(window, text="Rate", background="pink").grid(row=1, column=7)
         Label(window, text="Total Charge", background="pink").grid(row=1, column=8)
         # take the data
-        lst = [('Raj', 'Mumbai', dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15), 'S', 'booking.com', '$7', 5*7),
-            ('Aaryan', 'Pune', dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15), 'S', 'booking.com', '$7', 5*7),
-            ('Shubham', 'Delhi', dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15), 'S', 'booking.com', '$7', 5*7),]
-        # find total number of rows and
-        # columns in list
+        lst = [Reservation("Timmothy", "Leary", dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15),
+                           'S', 'booking.com', '$7', 5*7),
+               Reservation("Charles", "Manson", dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15),
+                           'S', 'booking.com', '$7', 5*7),
+               Reservation("Sharon", "Tate", dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15),
+                           'S', 'booking.com', '$7', 5*7)]
+        # find total number of rows and columns in list
         rows = len(lst)
-        cols = len(lst[0])
+        cols = 8  # number of variables in a reservation object
+        currRows = 0
         gridLabels = []
         for r in range(rows):
             for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
+                gridLabels.append(Label(window, text=lst[r].variableArray[c], borderwidth=1).grid(row=r+2, column=c))
                 currRows = r+2
+
         Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
         Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
         Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
