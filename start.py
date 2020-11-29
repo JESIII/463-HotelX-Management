@@ -5,6 +5,15 @@ import datetime as dt
 import os
 
 
+class Guest:
+    def __init__(self, f_name, l_name, r_num, check_in_date, check_out_date):
+        self.f_name = f_name
+        self.l_name = l_name
+        self.r_num = r_num
+        self.check_in_date = check_in_date
+        self.check_out_date = check_out_date
+
+
 class Window1:  # This window is for all the HOTEL ROOMS
     def __init__(self, master):
         window = Frame(master)
@@ -634,6 +643,63 @@ class Window8:  # This window is for DAILY REPORT!
         self.master.destroy()
         Window8(new_master)
     
+
+class GuestScreen:  # This window should be created by the Search guests window
+    def __init__(self, master, guests, guest_num):
+        window = Frame(master)
+        self.master = master
+        self.guest = guests[guest_num]
+        self.guests = guests
+        self.guest_num = guest_num
+
+        master.title("GUEST INFORMATION")
+        currRows = 0
+        # take the data
+        lst = [('First Name', 'Last Name', 'Room number', 'Check in date', 'Check out date'),
+            (self.guest.f_name, self.guest.l_name, self.guest.r_num, self.guest.check_in_date, self.guest.check_out_date)]
+        # find total number of rows and
+        # columns in list
+        rows = len(lst)
+        cols = len(lst[0])
+        gridLabels = []
+        for r in range(rows):
+            for c in range(cols):
+                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
+                currRows = r+1
+
+        self.f_name_entry = Entry(window)
+        self.l_name_entry = Entry(window)
+        self.r_num_entry = Entry(window)
+        self.check_in_date_entry = Entry(window)
+        self.check_out_date_entry = Entry(window)
+
+        self.f_name_entry.grid(row=3, column=0)
+        self.l_name_entry.grid(row=3, column=1)
+        self.r_num_entry.grid(row=3, column=2)
+        self.check_in_date_entry.grid(row=3, column=3)
+        self.check_out_date_entry.grid(row=3, column=4)
+
+        self.f_name_entry.insert(0, self.guest.f_name)
+        self.l_name_entry.insert(0, self.guest.l_name)
+        self.r_num_entry.insert(0, self.guest.r_num)
+        self.check_in_date_entry.insert(0, self.guest.check_in_date)
+        self.check_out_date_entry.insert(0, self.guest.check_out_date)
+
+        Button(window, text="Accept Changes", command=self.button_click_finish).grid(row=4, column=0)
+        window.pack()
+        # Create labels, entries,buttons
+
+    def button_click_finish(self):
+        self.guest.f_name = self.f_name_entry.get()
+        self.guest.l_name = self.l_name_entry.get()
+        self.guest.r_num = self.r_num_entry.get()
+        self.guest.check_in_date = self.check_in_date_entry.get()
+        self.guest.check_out_date = self.check_out_date_entry.get()
+        self.guests[self.guest_num] = self.guest
+
+        new_master = tk.Tk()
+        self.master.destroy()
+        # Create the search guest window, passing in the self.guests array
 
 
 def main():  # run mainloop
