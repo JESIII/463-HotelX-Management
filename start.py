@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.ttk import *
 import datetime as dt
-#from PIL import Image
+# from PIL import Image
 import os
 
 
@@ -12,6 +12,10 @@ class Guest:
         self.r_num = r_num
         self.check_in_date = check_in_date
         self.check_out_date = check_out_date
+        self.room_num = 0
+
+    def set_room_num(self, room_num):
+        self.room_num = room_num
 
 
 roomData = [{'room':101, 'type':'K', 'status':'Available'},{'room':102, 'type':'DQK', 'status':'Unavailable/Occupied'},{'room':103, 'type':'DQ', 'status':'Unavailable/Dirty'},{'room':104, 'type':'S', 'status':'Available'}]
@@ -21,6 +25,8 @@ lst = [(101, 'K', 'Available'),
             (103, 'DQ', 'Unavailable/Occupied'),
             (104, 'DQK', 'Unavailable/Dirty'),
             (105, 'S', 'Unavailable/Maintenance')]
+
+
 class Window1:  # This window is for all the HOTEL ROOMS
     def __init__(self, master):
         window = Frame(master)
@@ -659,12 +665,13 @@ class Window8:  # This window is for DAILY REPORT!
     
 
 class GuestScreen:  # This window should be created by the Search guests window
-    def __init__(self, master, guests, guest_num):
+    def __init__(self, master, guests, guest_num, from_cur_stay):
         window = Frame(master)
         self.master = master
         self.guest = guests[guest_num]
         self.guests = guests
         self.guest_num = guest_num
+        self.from_cur_stay = from_cur_stay
 
         master.title("GUEST INFORMATION")
         currRows = 0
@@ -713,7 +720,61 @@ class GuestScreen:  # This window should be created by the Search guests window
 
         new_master = tk.Tk()
         self.master.destroy()
-        # Create the search guest window, passing in the self.guests array
+        if self.from_cur_stay:
+            CurrentStayWindow(new_master, self.guests, self.guest, True)
+        # else: Create the search guest window, passing in the self.guests array
+
+
+class CurrentStayWindow:
+    def __init__(self, master, guests, guest, checked_in, has_reservation):
+        self.master = master
+        window = Frame(master)
+        self.guest = guest
+        self.has_reservation = has_reservation
+        self.room_num = 0
+
+        master.title("CURRENT STAY")
+
+        if checked_in:
+            '''
+            print guest and room info
+            '''
+            Button(window, text="Check-out", command=self.button_check_out).grid(row=3, column=0)
+        else:
+            '''
+            if has_reservation:
+                display guest info
+                display the reserved room
+            else:
+                display empty guest info entries
+                display list of available rooms
+                display entry for desired room number
+            '''
+            Button(window, text="Check-in", command=self.button_check_in).grid(row=3, column=0)
+        Button(window, text="Return to Room List", command=self.button_room_list).grid(row=3, column=1)
+        window.pack()
+
+    def button_check_out(self):
+        """
+        check RoomData for corresponding room number
+        change room status to Unavailable/Dirty
+        """
+        return
+
+    def button_check_in(self):
+        """
+        if !has_reservation:
+            set self.room_num
+            add guest info to guests
+            add room_num to that guest
+        change room status to Unavailable/Occupied
+        """
+        return
+
+    def button_room_list(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window1(new_master)
 
 
 def main():  # run mainloop
