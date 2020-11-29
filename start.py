@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter.ttk import *
 import datetime as dt
+from functools import partial
 # from PIL import Image
 import os
 
@@ -191,7 +192,8 @@ class Window2:  # This window is for the 7-DAY LIST!
 
 
 class Reservation:  # reservation object for window3, the RESERVATIONS
-    def __init__(self, First, Last, DateMade, CheckIn, CheckOut, RoomType, Website, Rate, TotalCharge):
+    def __init__(self, First="", Last="", DateMade="", CheckIn="", CheckOut="", RoomType="", Website="", Rate="",
+                 TotalCharge=""):
         self.First = First
         self.Last = Last
         self.DateMade = DateMade
@@ -206,10 +208,11 @@ class Reservation:  # reservation object for window3, the RESERVATIONS
 
 
 class Window3:  # This window is for RESERVATION!
-    def __init__(self, master):
+    def __init__(self, master, lst=[Reservation()]):  # mutable default arg is intentional. Ignore warning!
         window = Frame(master)
         self.master = master
         master.title("RESERVATIONS")
+        self.numberOfVariables = 8
         Label(window, text="Reservations", background="pink", anchor='w').grid(row=0, column=0)
         Label(window, text="First", background="pink").grid(row=1, column=0)
         Label(window, text="Last", background="pink").grid(row=1, column=1)
@@ -220,32 +223,134 @@ class Window3:  # This window is for RESERVATION!
         Label(window, text="Website", background="pink").grid(row=1, column=6)
         Label(window, text="Rate", background="pink").grid(row=1, column=7)
         Label(window, text="Total Charge", background="pink").grid(row=1, column=8)
-        # take the data
-        lst = [Reservation("Timmothy", "Leary", dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15),
-                           'S', 'booking.com', '$7', 5*7),
-               Reservation("Charles", "Manson", dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15),
-                           'S', 'booking.com', '$7', 5*7),
-               Reservation("Sharon", "Tate", dt.date(2020, 10, 5), dt.date(2020, 10, 10), dt.date(2020, 10, 15),
-                           'S', 'booking.com', '$7', 5*7)]
+        # take the mutable data
+        self.lst = lst
+        # button for add. Cannot pass arguments. self.button_add(<<arguments>>) will automatically
+        # trigger the function for some reason. So I had to make lst a self.lst so all defs will have access
+        # without needing it passed. A similar implementation can be seen in button_add's call to button_add_enter
+        Button(window, text="Add", command=self.button_click_add).grid(row=0, column=7)
+
         # find total number of rows and columns in list
-        rows = len(lst)
-        cols = 8  # number of variables in a reservation object
+        rows = len(self.lst)
+        cols = self.numberOfVariables  # number of variables in a reservation object
         currRows = 0
         gridLabels = []
         for r in range(rows):
             for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r].variableArray[c], borderwidth=1).grid(row=r+2, column=c))
+                gridLabels.append(Label(window, text=self.lst[r].variableArray[c], borderwidth=1).grid(row=r+2, column=c))
+                # button for delete
+                self.delete_with_r = partial(self.button_click_delete, r)  # pairs the action with an argument for below
+                Button(window, text="Delete", command=self.delete_with_r).grid(row=r + 2, column=8)
+                # Edit button
+                self.edit_with_r = partial(self.button_click_edit, r)  # pairs the action with an argument for below
+                Button(window, text="Edit", command=self.edit_with_r).grid(row=r + 2, column=9)
                 currRows = r+2
 
-        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
-        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
-        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
-        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
-        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
-        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
-        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
+        # main buttons
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows + 1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows + 1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows + 1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows + 1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows + 1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows + 1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows + 1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows + 1, column=7)
+
         window.pack()
+
+    def refresh(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window3(new_master, self.lst)
+
+    def entry(self):
+        self.sub_window = tk.Tk()
+
+        self.entry_1 = Entry()
+        self.entry_1.grid(row=0, column=0)
+
+        self.entry_2 = Entry()
+        self.entry_2.grid(row=1, column=0)
+
+        self.entry_3 = Entry()
+        self.entry_3.grid(row=2, column=0)
+
+        self.entry_4 = Entry()
+        self.entry_4.grid(row=3, column=0)
+
+        self.entry_5 = Entry()
+        self.entry_5.grid(row=4, column=0)
+
+        self.entry_6 = Entry()
+        self.entry_6.grid(row=5, column=0)
+
+        self.entry_7 = Entry()
+        self.entry_7.grid(row=6, column=0)
+
+        self.entry_8 = Entry()
+        self.entry_8.grid(row=7, column=0)
+
+        self.temp_array = []
+
+    def button_click_enter(self):
+        self.temp_array.append(self.entry_1.get())
+        self.temp_array.append(self.entry_2.get())
+        self.temp_array.append(self.entry_3.get())
+        self.temp_array.append(self.entry_4.get())
+        self.temp_array.append(self.entry_5.get())
+        self.temp_array.append(self.entry_6.get())
+        self.temp_array.append(self.entry_7.get())
+        self.temp_array.append(self.entry_8.get())
+
+    def button_click_add(self):
+        self.entry()
+        Button(self.sub_window, text="Enter", command=self.button_add_enter).grid(row=0, column=1)
+
+    def button_click_edit(self, r):
+        self.entry()
+
+        convert_to_check_in = partial(self.button_click_convert_to_check_in, r) # pairs the action with an argument for below
+        Button(self.sub_window, text="Convert to Check-In", command=convert_to_check_in).grid(row=0, column=2)
+
+        edit_with_r_temp = partial(self.button_edit_enter, r)
+        Button(self.sub_window, text="Change", command=edit_with_r_temp).grid(row=0, column=1)
+
+    def button_click_convert_to_check_in(self, r):
+        self.button_edit_convert(r)
+
+        # TODO
+        # Next, pass self.list[r] to button_click6 when feature is implemented.
+        # Right now, the call has no parameter to accept this.
+        self.button_click6()
+
+    def button_edit_enter(self, r):
+        self.button_click_enter()
+        self.lst[r] = Reservation(self.temp_array[0], self.temp_array[1], self.temp_array[2], self.temp_array[3],
+                                  self.temp_array[4], self.temp_array[5], self.temp_array[6], self.temp_array[7])
+
+        new_master = tk.Tk()
+        self.master.destroy()
+        self.sub_window.destroy()
+        Window3(new_master, self.lst)
+
+    def button_edit_convert(self, r):
+        self.button_click_enter()
+        self.lst[r] = Reservation(self.temp_array[0], self.temp_array[1], self.temp_array[2], self.temp_array[3],
+                                  self.temp_array[4], self.temp_array[5], self.temp_array[6], self.temp_array[7])
+
+    def button_add_enter(self):
+        self.button_click_enter()
+        self.lst.append(Reservation(self.temp_array[0], self.temp_array[1], self.temp_array[2], self.temp_array[3],
+                                    self.temp_array[4], self.temp_array[5], self.temp_array[6], self.temp_array[7]))
+
+        new_master = tk.Tk()
+        self.master.destroy()
+        self.sub_window.destroy()
+        Window3(new_master, self.lst)
+
+    def button_click_delete(self, r):
+        del self.lst[r]
+        self.refresh()
 
     def button_click1(self):
         new_master = tk.Tk()
@@ -289,39 +394,188 @@ class Window3:  # This window is for RESERVATION!
         # Create labels, entries,buttons
 
 
+class Checklist:
+    def __init__(self, server="", room_num=0, room_type="", status=False, bathroom=False, towels=False, sheets=False,
+                 vacuum=False, dusting=False, electronics=False):
+        self.server = server
+        self.room_num = room_num
+        self.room_type = room_type
+        self.status = status
+        self.bathroom = bathroom
+        self.towels = towels
+        self.sheets = sheets
+        self.vacuum = vacuum
+        self.dusting = dusting
+        self.electronics = electronics
+        self.variableArray = [self.server, self.room_num, self.room_type, self.status, self.bathroom, self.towels,
+                              self.sheets, self.vacuum, self.dusting, self.electronics]
+
+
 class Window4:  # This window is for HOUSEKEEPING!
-    def __init__(self, master):
+    def __init__(self, master, lst=[Checklist()]):  # mutable default arg is intentional. Ignore warning!
         window = Frame(master)
         self.master = master
         master.title("HOUSEKEEPING")
-        label = Label(window, text="Rooms", background="pink",anchor='w').grid(row=0, column=0)
+        self.numberOfVariables = 10
+        # Label(window, text="Rooms", background="pink", anchor='w').grid(row=0, column=0)
+        Label(window, text="Server", background="pink").grid(row=0, column=0)
+        Label(window, text="Room #", background="pink").grid(row=0, column=1)
+        Label(window, text="Room Type", background="pink").grid(row=0, column=2)
+        Label(window, text="Status", background="pink").grid(row=0, column=3)
+        Label(window, text="Bathroom", background="pink").grid(row=0, column=4)
+        Label(window, text="Towels", background="pink").grid(row=0, column=5)
+        Label(window, text="Sheets", background="pink").grid(row=0, column=6)
+        Label(window, text="Vacuum", background="pink").grid(row=0, column=7)
+        Label(window, text="Dusting", background="pink").grid(row=0, column=8)
+        Label(window, text="Electronics", background="pink").grid(row=0, column=9)
+        # take the mutable data
+        self.lst = lst
+        # button for add. Cannot pass arguments. self.button_add(<<arguments>>) will automatically
+        # trigger the function for some reason. So I had to make lst a self.lst so all defs will have access
+        # without needing it passed. A similar implementation can be seen in button_add's call to button_add_enter
+        Button(window, text="Add", command=self.button_click_add).grid(row=0, column=11)
+
+        # find total number of rows and columns in list
+        rows = len(self.lst)
+        cols = self.numberOfVariables  # number of variables in a reservation object
         currRows = 0
-        # take the data
-        lst = [('Server', 'Rm#', 'Type', 'Status', 'Bathroom', 'Towels', 'Sheets', 'Vacuum', 'Dusting', 'Electronics'),
-            ('', '', '', '', '', '', '', '', '', ''),
-            ('', '', '', '', '', '', '', '', '', ''),
-            ('', '', '', '', '', '', '', '', '', ''),
-            ('', '', '', '', '', '', '', '', '', '')]
-        # find total number of rows and
-        # columns in list
-        rows = len(lst)
-        cols = len(lst[0])
         gridLabels = []
         for r in range(rows):
             for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
-                currRows = r+1
-        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
-        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
-        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
-        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
-        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
-        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
-        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
+                gridLabels.append(Label(window, text=self.lst[r].variableArray[c], borderwidth=1).grid(row=r+2, column=c))
+                if self.check_readiness(self.lst[r].variableArray):
+                    Label(window, text="True", borderwidth=1).grid(row=r+2, column=13)
+                else:
+                    Label(window, text="False", borderwidth=1).grid(row=r + 2, column=13)
+                # button for delete
+                self.delete_with_r = partial(self.button_click_delete, r)  # pairs the action with an argument for below
+                Button(window, text="Delete", command=self.delete_with_r).grid(row=r + 2, column=11)
+                # Checklist button
+                self.edit_with_r = partial(self.button_click_edit, r)  # pairs the action with an argument for below
+                Button(window, text="Check", command=self.edit_with_r).grid(row=r + 2, column=12)
+                currRows = r+2
+        # main buttons
+        Button(window, text="Room List", command=self.button_click1).grid(row=currRows + 1, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows + 1, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows + 1, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows + 1, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows + 1, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows + 1, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows + 1, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows + 1, column=7)
+
         window.pack()
-        # Create labels, entries,buttons
-        window.pack()
+
+    def check_readiness(self, reservation_array):
+        for j in reservation_array:
+            if not reservation_array[j]:
+                return False
+        return True
+
+    def refresh(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window4(new_master, self.lst)
+
+    def entry(self):
+        self.sub_window = tk.Tk()
+
+        self.entry_1 = Entry()
+        self.entry_1.grid(row=0, column=0)
+
+        self.entry_2 = Entry()
+        self.entry_2.grid(row=1, column=0)
+
+        self.entry_3 = Entry()
+        self.entry_3.grid(row=2, column=0)
+
+        self.entry_4 = Entry()
+        self.entry_4.grid(row=3, column=0)
+
+        self.entry_5 = Entry()
+        self.entry_5.grid(row=4, column=0)
+
+        self.entry_6 = Entry()
+        self.entry_6.grid(row=5, column=0)
+
+        self.entry_7 = Entry()
+        self.entry_7.grid(row=6, column=0)
+
+        self.entry_8 = Entry()
+        self.entry_8.grid(row=7, column=0)
+
+        self.entry_9 = Entry()
+        self.entry_9.grid(row=8, column=0)
+
+        self.entry_10 = Entry()
+        self.entry_10.grid(row=9, column=0)
+
+        self.temp_array = []
+
+    def button_click_enter(self):
+        self.temp_array.append(self.entry_1.get())
+        self.temp_array.append(self.entry_2.get())
+        self.temp_array.append(self.entry_3.get())
+        self.temp_array.append(self.entry_4.get())
+        self.temp_array.append(self.entry_5.get())
+        self.temp_array.append(self.entry_6.get())
+        self.temp_array.append(self.entry_7.get())
+        self.temp_array.append(self.entry_8.get())
+        self.temp_array.append(self.entry_9.get())
+        self.temp_array.append(self.entry_10.get())
+
+    def button_click_add(self):
+        self.entry()
+        Button(self.sub_window, text="Enter", command=self.button_add_enter).grid(row=0, column=1)
+
+    def button_click_edit(self, r):
+        self.entry()
+
+        # convert_to_check_in = partial(self.button_click_convert_to_check_in, r) # pairs the action with an argument for below
+        # Button(self.sub_window, text="Convert to Check-In", command=convert_to_check_in).grid(row=0, column=2)
+
+        edit_with_r_temp = partial(self.button_edit_enter, r)
+        Button(self.sub_window, text="Change", command=edit_with_r_temp).grid(row=0, column=1)
+    '''
+    def button_click_convert_to_check_in(self, r):
+        self.button_edit_convert(r)
+
+        # TODO
+        # Next, pass self.list[r] to button_click6 when feature is implemented.
+        # Right now, the call has no parameter to accept this.
+        self.button_click6()'''
+
+    def button_edit_enter(self, r):
+        self.button_click_enter()
+        self.lst[r] = Checklist(self.temp_array[0], self.temp_array[1], self.temp_array[2], self.temp_array[3],
+                                self.temp_array[4], self.temp_array[5], self.temp_array[6], self.temp_array[7],
+                                self.temp_array[8], self.temp_array[9])
+
+        new_master = tk.Tk()
+        self.master.destroy()
+        self.sub_window.destroy()
+        Window4(new_master, self.lst)
+
+    def button_edit_convert(self, r):
+        self.button_click_enter()
+        self.lst[r] = Checklist(self.temp_array[0], self.temp_array[1], self.temp_array[2], self.temp_array[3],
+                                self.temp_array[4], self.temp_array[5], self.temp_array[6], self.temp_array[7],
+                                self.temp_array[8], self.temp_array[9])
+
+    def button_add_enter(self):
+        self.button_click_enter()
+        self.lst.append(Checklist(self.temp_array[0], self.temp_array[1], self.temp_array[2], self.temp_array[3],
+                                  self.temp_array[4], self.temp_array[5], self.temp_array[6], self.temp_array[7],
+                                  self.temp_array[8], self.temp_array[9]))
+
+        new_master = tk.Tk()
+        self.master.destroy()
+        self.sub_window.destroy()
+        Window4(new_master, self.lst)
+
+    def button_click_delete(self, r):
+        del self.lst[r]
+        self.refresh()
 
     def button_click1(self):
         new_master = tk.Tk()
