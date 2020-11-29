@@ -14,6 +14,13 @@ class Guest:
         self.check_out_date = check_out_date
 
 
+roomData = [{'room':101, 'type':'K', 'status':'Available'},{'room':102, 'type':'DQK', 'status':'Unavailable/Occupied'},{'room':103, 'type':'DQ', 'status':'Unavailable/Dirty'},{'room':104, 'type':'S', 'status':'Available'}]
+roomRates = {'S':10, 'K':20, 'DQK':30, 'DQ':25}
+lst = [(101, 'K', 'Available'),
+            (102, 'K', 'Available'),
+            (103, 'DQ', 'Unavailable/Occupied'),
+            (104, 'DQK', 'Unavailable/Dirty'),
+            (105, 'S', 'Unavailable/Maintenance')]
 class Window1:  # This window is for all the HOTEL ROOMS
     def __init__(self, master):
         window = Frame(master)
@@ -25,11 +32,6 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Label(window, text="Type").grid(row=1, column=1)
         Label(window, text="Status").grid(row=1, column=2)
         # take the data
-        lst = [(101, 'K', 'Available'),
-            (102, 'K', 'Available'),
-            (103, 'DQ', 'Unavailable/Occupied'),
-            (104, 'DQK', 'Unavailable/Dirty'),
-            (105, 'S', 'Unavailable/Maintenance')]
         # find total number of rows and
         # columns in list
         rows = len(lst)
@@ -37,7 +39,13 @@ class Window1:  # This window is for all the HOTEL ROOMS
         gridLabels = []
         for r in range(rows):
             for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
+                if lst[r][2] != 'Available':
+                    gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
+                else:
+                    if c == 2:
+                        Button(window, text="Available", command=self.button_click6).grid(row=r+2, column=c)
+                    else:
+                        gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
                 currRows = r+2
         # Create labels, entries,buttons
         Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
@@ -45,7 +53,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
         Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
         Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
-        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
+        # Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
         Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
         Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
         window.pack()
@@ -430,11 +438,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
         label = Label(window, text="Guests", background="pink",anchor='w').grid(row=0, column=0)
         # take the data
         lst = [('Guest Name', 'Check In Date and Time', 'Expected Check Out Date and Time',  'Room Type', 'Room Number',
-                'Room Rate ($/Day)', 'Total Charge', 'Payments Made', 'Balance'),
-            ('', '', '', '', '', '', '', '', ''),
-            ('', '', '', '', '', '', '', '', ''),
-            ('', '', '', '', '', '', '', '', ''),
-            ('', '', '', '', '', '', '', '', '')]
+                'Room Rate ($/Day)', 'Total Charge', 'Payments Made', 'Balance')]
         currRows = 0
         # find total number of rows and
         # columns in list
@@ -445,6 +449,16 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
             for c in range(cols):
                 gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
                 currRows = r+1
+        name = Entry(window).grid(row=currRows+1, column=0)
+        checkindt = Label(window, text=dt.datetime.today).grid(row=currRows+1, column=1)
+        checkoutdt = Entry(window).grid(row=currRows+1, column=2)
+        Label(window, text="RoomType Placeholder").grid(row=currRows+1, column=3)
+        Label(window, text="Room# Placeholder").grid(row=currRows+1, column=4)
+        Label(window, text="RoomRate Placeholder").grid(row=currRows+1, column=5)
+        TotalCharge = Label(window, text=1337).grid(row=currRows+1, column=6)
+        PaymentsMade = Entry(window, text=0).grid(row=currRows+1, column=7)
+        Label(window, text='test').grid(row=currRows+1, column=8)
+        currRows = currRows+1
         window.pack()
         Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
         Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
