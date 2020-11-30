@@ -19,7 +19,14 @@ class Guest:
         self.room_num = 0
 
 
+class Room: # Please update this class with the info it needs
+    def __init__(self, num, status):
+        self.num = num
+        self.status = status
+
+
 guests = [Guest("Johnny", "Johnson", "555-5555", "0000", "John@email.com", "CA, 1234", "YOOOOOO")]
+rooms = []
 roomData = [{'room':101, 'type':'K', 'status':'Available'},{'room':102, 'type':'DQK', 'status':'Unavailable/Occupied'},{'room':103, 'type':'DQ', 'status':'Unavailable/Dirty'},{'room':104, 'type':'S', 'status':'Available'}]
 roomRates = {'S':10, 'K':20, 'DQK':30, 'DQ':25}
 lst = [(101, 'K', 'Available'),
@@ -193,19 +200,28 @@ class Window2:  # This window is for the 7-DAY LIST!
 
 
 class Reservation:  # reservation object for window3, the RESERVATIONS
-    def __init__(self, First="", Last="", DateMade="", CheckIn="", CheckOut="", RoomType="", Website="", Rate="",
-                 TotalCharge=""):
+    def __init__(self, First="", Last="", DateMade="", CheckIn="", CheckOut="", RoomType="", Website="",
+                 Rate="", TotalCharge="", room_num="", payments="", balance="", guest_num=-1):
         self.First = First
         self.Last = Last
         self.DateMade = DateMade
         self.CheckIn = CheckIn
         self.CheckOut = CheckOut
         self.RoomType = RoomType
+        self.room_num = room_num
         self.Website = Website
         self.Rate = Rate
         self.TotalCharge = TotalCharge
+        self.payments = payments
+        self.balance = balance
+        self.guest_num = guest_num
         self.variableArray = [self.First, self.Last, self.DateMade, self.CheckIn, self.CheckOut, self.RoomType,
                               self.Website, self.Rate, self.TotalCharge]
+        self.cur_stay = [self.First, self.Last, self.CheckIn, self.CheckOut, self.RoomType, self.room_num, self.Rate,
+                         self.TotalCharge, self.payments, self.balance]
+
+
+reservations = [Reservation()]
 
 
 class Window3:  # This window is for RESERVATION!
@@ -732,44 +748,86 @@ class Window5:  # This window is for GUEST PROFILE!
 
 
 class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
-    def __init__(self, master):
+    def __init__(self, master, res_num=-1):
         window = Frame(master)
         self.master = master
+        self.res_num = res_num
+
         master.title("GUEST'S CURRENT STAY INFO")
-        label = Label(window, text="Guests", background="pink",anchor='w').grid(row=0, column=0)
-        # take the data
-        lst = [('Guest Name', 'Check In Date and Time', 'Expected Check Out Date and Time',  'Room Type', 'Room Number',
-                'Room Rate ($/Day)', 'Total Charge', 'Payments Made', 'Balance')]
+
         currRows = 0
-        # find total number of rows and
-        # columns in list
-        rows = len(lst)
-        cols = len(lst[0])
-        gridLabels = []
-        for r in range(rows):
-            for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
-                currRows = r+1
-        name = Entry(window).grid(row=currRows+1, column=0)
-        checkindt = Label(window, text=dt.datetime.today).grid(row=currRows+1, column=1)
-        checkoutdt = Entry(window).grid(row=currRows+1, column=2)
-        Label(window, text="RoomType Placeholder").grid(row=currRows+1, column=3)
-        Label(window, text="Room# Placeholder").grid(row=currRows+1, column=4)
-        Label(window, text="RoomRate Placeholder").grid(row=currRows+1, column=5)
-        TotalCharge = Label(window, text=1337).grid(row=currRows+1, column=6)
-        PaymentsMade = Entry(window, text=0).grid(row=currRows+1, column=7)
-        Label(window, text='test').grid(row=currRows+1, column=8)
-        currRows = currRows+1
+        if res_num >= 0 and res_num < len(reservations):
+            Label(window, text="Guests", background="pink",anchor='w').grid(row=0, column=0)
+            lst = [('Guest First Name', 'Guest Last Name', 'Check In Date and Time', 'Expected Check Out Date and Time',
+                    'Room Type', 'Room Number', 'Room Rate ($/Day)', 'Total Charge', 'Payments Made', 'Balance')]
+            # find total number of rows and
+            # columns in list
+            rows = len(lst)
+            cols = len(lst[0])
+            for r in range(rows):
+                for c in range(cols):
+                    Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c)
+                    currRows = r+1
+
+            # Button for guest name
+            guest_full_name = guests[reservations[res_num].guest_num].f_name + " " + guests[reservations[res_num].guest_num].l_name
+            Button(window, text=guest_full_name, command=self.button_guest_info).grid(row=2, column=0)
+
+            # Create entries
+            self.entries = []
+            for i in range(8):
+                self.entries.append(Entry(window))
+                # Place entries
+                self.entries[i].grid(row=2, column=i+2)
+                # Populate entries with all available reservation information
+                self.entries[i].insert(0, reservations[res_num].cur_stay[i])
+            # Button to update reservation information
+            Button(window, text="Update Reservation info", command=self.button_update_reservation).grid(row=3, column=0)
+            # Check-in and check-out buttons
+            Button(window, text="Check-in", command=self.button_check_in).grid(row=3, column=1)
+            Button(window, text="Check-out", command=self.button_check_out).grid(row=3, column=2)
+
+        Button(window, text="Room List", command=self.button_click1).grid(row=4, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=4, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=4, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=4, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=4, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=4, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=4, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=4, column=7)
         window.pack()
-        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
-        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
-        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
-        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
-        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
-        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
-        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
-        # Create labels, entries,buttons
+
+    def button_check_in(self):
+        for r in rooms:
+            if r.num is reservations[self.res_num].room_num:
+                r.status = "Unavailable/Occupied"
+
+    def button_check_out(self):
+        for r in rooms:
+            if r.num is reservations[self.res_num].room_num:
+                r.status = "Unavailable/Dirty"
+
+    def button_guest_info(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        Window5(new_master, reservations[self.res_num].guest_num)
+
+    def button_update_reservation(self):
+        reservations[self.res_num].CheckIn = self.entries[0].get()
+        reservations[self.res_num].variableArray[3] = self.entries[0].get()
+        reservations[self.res_num].CheckOut = self.entries[1].get()
+        reservations[self.res_num].variableArray[4] = self.entries[1].get()
+        reservations[self.res_num].RoomType = self.entries[2].get()
+        reservations[self.res_num].variableArray[5] = self.entries[2].get()
+        reservations[self.res_num].room_num = self.entries[3].get()
+        reservations[self.res_num].Rate = self.entries[4].get()
+        reservations[self.res_num].variableArray[7] = self.entries[4].get()
+        reservations[self.res_num].TotalCharge = self.entries[5].get()
+        reservations[self.res_num].variableArray[8] = self.entries[5].get()
+        reservations[self.res_num].payments = self.entries[6].get()
+        reservations[self.res_num].balance = self.entries[7].get()
+        for i in range(8):
+            reservations[self.res_num].cur_stay[i] = self.entries[i].get()
 
     def button_click1(self):
         new_master = tk.Tk()
@@ -957,58 +1015,6 @@ class Window8:  # This window is for DAILY REPORT!
         new_master = tk.Tk()
         self.master.destroy()
         Window8(new_master)
-
-
-class CurrentStayWindow:
-    def __init__(self, master, guests, guest, checked_in, has_reservation):
-        self.master = master
-        window = Frame(master)
-        self.guest = guest
-        self.has_reservation = has_reservation
-        self.room_num = 0
-
-        master.title("CURRENT STAY")
-
-        if checked_in:
-            '''
-            print guest and room info
-            '''
-            Button(window, text="Check-out", command=self.button_check_out).grid(row=3, column=0)
-        else:
-            '''
-            if has_reservation:
-                display guest info
-                display the reserved room
-            else:
-                display empty guest info entries
-                display list of available rooms
-                display entry for desired room number
-            '''
-            Button(window, text="Check-in", command=self.button_check_in).grid(row=3, column=0)
-        Button(window, text="Return to Room List", command=self.button_room_list).grid(row=3, column=1)
-        window.pack()
-
-    def button_check_out(self):
-        """
-        check RoomData for corresponding room number
-        change room status to Unavailable/Dirty
-        """
-        return
-
-    def button_check_in(self):
-        """
-        if !has_reservation:
-            set self.room_num
-            add guest info to guests
-            add room_num to that guest
-        change room status to Unavailable/Occupied
-        """
-        return
-
-    def button_room_list(self):
-        new_master = tk.Tk()
-        self.master.destroy()
-        Window1(new_master)
 
 
 def main():  # run mainloop
