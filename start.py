@@ -7,18 +7,19 @@ import os
 
 
 class Guest:
-    def __init__(self, f_name, l_name, r_num, check_in_date, check_out_date):
+    def __init__(self, f_name, l_name, phone, address, email, _id, _license):
         self.f_name = f_name
         self.l_name = l_name
-        self.r_num = r_num
-        self.check_in_date = check_in_date
-        self.check_out_date = check_out_date
+        self.phone = phone
+        self.address = address
+        self.email = email
+        self.id = _id
+        self.license = _license
+
         self.room_num = 0
 
-    def set_room_num(self, room_num):
-        self.room_num = room_num
 
-
+guests = [Guest("Johnny", "Johnson", "555-5555", "0000", "John@email.com", "CA, 1234", "YOOOOOO")]
 roomData = [{'room':101, 'type':'K', 'status':'Available'},{'room':102, 'type':'DQK', 'status':'Unavailable/Occupied'},{'room':103, 'type':'DQ', 'status':'Unavailable/Dirty'},{'room':104, 'type':'S', 'status':'Available'}]
 roomRates = {'S':10, 'K':20, 'DQK':30, 'DQ':25}
 lst = [(101, 'K', 'Available'),
@@ -88,7 +89,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -172,7 +173,7 @@ class Window2:  # This window is for the 7-DAY LIST!
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -375,7 +376,7 @@ class Window3:  # This window is for RESERVATION!
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -600,7 +601,7 @@ class Window4:  # This window is for HOUSEKEEPING!
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -620,34 +621,74 @@ class Window4:  # This window is for HOUSEKEEPING!
 
 
 class Window5:  # This window is for GUEST PROFILE!
-    def __init__(self, master):
+    def __init__(self, master, guest_num):
         window = Frame(master)
         self.master = master
+        self.guest_num = guest_num
+
         master.title("GUEST PROFILE")
-        label = Label(window, text="Guest", background="pink",anchor='w').grid(row=0, column=0)
-        lst = [('First Name', 'Last Name', 'Phone', 'Address', 'E-mail',  'ID Info (State, ID#)', 'Vehicle License Plate'),
-            ('', '', '', '', '', '', '')]
-        currRows = 0
-        # find total number of rows and
-        # columns in list
-        rows = len(lst)
-        cols = len(lst[0])
-        gridLabels = []
-        for r in range(rows):
-            for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
-                currRows = r+2
-        window.pack()
+
+        if guest_num >= 0:
+            Label(window, text="Guest", background="pink",anchor='w').grid(row=0, column=0)
+            lst = [('First Name', 'Last Name', 'Phone', 'Address', 'E-mail',  'ID Info (State, ID#)', 'Vehicle License Plate')]
+            # find total number of rows and
+            # columns in list
+            rows = len(lst)
+            cols = len(lst[0])
+            for r in range(rows):
+                for c in range(cols):
+                    Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c)
+
+            # Create entries
+            self.efname = Entry(window)
+            self.elname = Entry(window)
+            self.ephone = Entry(window)
+            self.eaddress = Entry(window)
+            self.eemail = Entry(window)
+            self.eid = Entry(window)
+            self.elicense = Entry(window)
+
+            # Place entries
+            self.efname.grid(row=1, column=0)
+            self.elname.grid(row=1, column=1)
+            self.ephone.grid(row=1, column=2)
+            self.eaddress.grid(row=1, column=3)
+            self.eemail.grid(row=1, column=4)
+            self.eid.grid(row=1, column=5)
+            self.elicense.grid(row=1, column=6)
+
+            # Insert pre-existing guest info to the entries
+            self.efname.insert(0, guests[guest_num].f_name)
+            self.elname.insert(0, guests[guest_num].l_name)
+            self.ephone.insert(0, guests[guest_num].phone)
+            self.eaddress.insert(0, guests[guest_num].address)
+            self.eemail.insert(0, guests[guest_num].email)
+            self.eid.insert(0, guests[guest_num].id)
+            self.elicense.insert(0, guests[guest_num].license)
+
+            # Button for accepting any changes to the entries
+            Button(window, text="Accept Changes", command=self.button_click_edit).grid(row=2, column=0)
+
         # Create labels, entries,buttons
-        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
-        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
-        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
-        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
-        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
-        Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
-        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
+        Button(window, text="Room List", command=self.button_click1).grid(row=3, column=0)
+        Button(window, text="Weekly List", command=self.button_click2).grid(row=3, column=1)
+        Button(window, text="Reservation", command=self.button_click3).grid(row=3, column=2)
+        Button(window, text="Housekeeping", command=self.button_click4).grid(row=3, column=3)
+        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=3, column=4)
+        Button(window, text="Current Stay", command=self.button_click6).grid(row=3, column=5)
+        Button(window, text="Guest Search", command=self.button_click7).grid(row=3, column=6)
+        Button(window, text="Daily Report", command=self.button_click8).grid(row=3, column=7)
+
         window.pack()
+
+    def button_click_edit(self):
+        guests[self.guest_num].f_name = self.efname.get()
+        guests[self.guest_num].l_name = self.elname.get()
+        guests[self.guest_num].phone = self.ephone.get()
+        guests[self.guest_num].address = self.eaddress.get()
+        guests[self.guest_num].email = self.eemail.get()
+        guests[self.guest_num].id = self.eid.get()
+        guests[self.guest_num].license = self.elicense.get()
 
     def button_click1(self):
         new_master = tk.Tk()
@@ -672,7 +713,7 @@ class Window5:  # This window is for GUEST PROFILE!
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -753,7 +794,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -825,7 +866,7 @@ class Window7:  # This window is for GUEST SEARCH!
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -900,7 +941,7 @@ class Window8:  # This window is for DAILY REPORT!
     def button_click5(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window5(new_master)
+        Window5(new_master, -1)
 
     def button_click6(self):
         new_master = tk.Tk()
@@ -916,67 +957,6 @@ class Window8:  # This window is for DAILY REPORT!
         new_master = tk.Tk()
         self.master.destroy()
         Window8(new_master)
-    
-
-class GuestScreen:  # This window should be created by the Search guests window
-    def __init__(self, master, guests, guest_num, from_cur_stay):
-        window = Frame(master)
-        self.master = master
-        self.guest = guests[guest_num]
-        self.guests = guests
-        self.guest_num = guest_num
-        self.from_cur_stay = from_cur_stay
-
-        master.title("GUEST INFORMATION")
-        currRows = 0
-        # take the data
-        lst = [('First Name', 'Last Name', 'Room number', 'Check in date', 'Check out date'),
-            (self.guest.f_name, self.guest.l_name, self.guest.r_num, self.guest.check_in_date, self.guest.check_out_date)]
-        # find total number of rows and
-        # columns in list
-        rows = len(lst)
-        cols = len(lst[0])
-        gridLabels = []
-        for r in range(rows):
-            for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c))
-                currRows = r+1
-
-        self.f_name_entry = Entry(window)
-        self.l_name_entry = Entry(window)
-        self.r_num_entry = Entry(window)
-        self.check_in_date_entry = Entry(window)
-        self.check_out_date_entry = Entry(window)
-
-        self.f_name_entry.grid(row=3, column=0)
-        self.l_name_entry.grid(row=3, column=1)
-        self.r_num_entry.grid(row=3, column=2)
-        self.check_in_date_entry.grid(row=3, column=3)
-        self.check_out_date_entry.grid(row=3, column=4)
-
-        self.f_name_entry.insert(0, self.guest.f_name)
-        self.l_name_entry.insert(0, self.guest.l_name)
-        self.r_num_entry.insert(0, self.guest.r_num)
-        self.check_in_date_entry.insert(0, self.guest.check_in_date)
-        self.check_out_date_entry.insert(0, self.guest.check_out_date)
-
-        Button(window, text="Accept Changes", command=self.button_click_finish).grid(row=4, column=0)
-        window.pack()
-        # Create labels, entries,buttons
-
-    def button_click_finish(self):
-        self.guest.f_name = self.f_name_entry.get()
-        self.guest.l_name = self.l_name_entry.get()
-        self.guest.r_num = self.r_num_entry.get()
-        self.guest.check_in_date = self.check_in_date_entry.get()
-        self.guest.check_out_date = self.check_out_date_entry.get()
-        self.guests[self.guest_num] = self.guest
-
-        new_master = tk.Tk()
-        self.master.destroy()
-        if self.from_cur_stay:
-            CurrentStayWindow(new_master, self.guests, self.guest, True)
-        # else: Create the search guest window, passing in the self.guests array
 
 
 class CurrentStayWindow:
@@ -1032,6 +1012,7 @@ class CurrentStayWindow:
 
 
 def main():  # run mainloop
+
     root = tk.Tk()
     app = Window1(root)
     root.mainloop()
