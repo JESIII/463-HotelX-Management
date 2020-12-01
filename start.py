@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter.ttk import *
 import datetime as dt
+from datetime import timedelta
+from datetime import date
 from functools import partial
+import time
 # from PIL import Image
 import os
 
@@ -62,8 +65,6 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Button(NavFrame, text="Guest Search", command=self.button_click7).grid(row=currRow, column=6, sticky = 'W', pady = 2)
         Button(NavFrame, text="Daily Report", command=self.button_click8).grid(row=currRow, column=7, sticky = 'W', pady = 2)
         NavFrame.pack()
-        
-
 
     def button_click1(self):
         new_master = tk.Tk()
@@ -104,7 +105,9 @@ class Window1:  # This window is for all the HOTEL ROOMS
         new_master = tk.Tk()
         self.master.destroy()
         Window8(new_master)
-    def confirmEntry(self, reservation):
+    def confirmEntry(self):
+        total = (dt.datetime.strptime(self.checkout.get(), '%Y-%m-%d') - dt.datetime.strptime(self.checkin.get(), '%Y-%m-%d')).days * self.roomRate['text']
+        reservation = Reservation(self.fname.get(), self.lname.get(), self.today['text'], self.checkin.get(), self.checkout.get(), self.roomType['text'], self.website.get(), self.roomRate['text'], total, self.roomNum['text'], self.payments.get(), self.balance.get(), self.numGuests.get())
         reservations.append(reservation)
         for x in range(len(rooms)):
             if str(rooms[x].num) == reservation.room_num:
@@ -113,6 +116,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
         self.master.destroy()
         self.sub_window.destroy()
         Window1(new_master)
+
     def availableButton(self, room):
         self.sub_window = tk.Tk()
         self.sub_window.title('Make Reservation')
@@ -129,34 +133,33 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Label(self.sub_window, text='Payments').grid(row=10, column=0)
         Label(self.sub_window, text='Balance').grid(row=11, column=0)
         Label(self.sub_window, text='Number of Guests').grid(row=12, column=0)
-        fname = Entry(self.sub_window)
-        fname.grid(row=0, column=1)
-        lname = Entry(self.sub_window)
-        lname.grid(row=1, column=1)
-        today = Label(self.sub_window, text=str(dt.date.today()))
-        today.grid(row=2, column=1)
-        checkin = Entry(self.sub_window)
-        checkin.grid(row=3, column=1)
-        checkout = Entry(self.sub_window)
-        checkout.grid(row=4, column=1)
-        roomType = Label(self.sub_window, text=str(room.type))
-        roomType.grid(row=5, column=1)
-        website = Entry(self.sub_window)
-        website.grid(row=6, column=1)
-        roomRate = Label(self.sub_window, text=roomRates.get(room.type))
-        roomRate.grid(row=7, column=1)
-        totalCharge = Entry(self.sub_window)
-        totalCharge.grid(row=8, column=1)
-        roomNum = Label(self.sub_window, text=str(room.num))
-        roomNum.grid(row=9, column=1)
-        payments = Entry(self.sub_window)
-        payments.grid(row=10, column=1)
-        balance = Entry(self.sub_window)
-        balance.grid(row=11, column=1)
-        numGuests = Entry(self.sub_window)
-        numGuests.grid(row=12, column=1)
-        reservation = Reservation(fname.get(), lname.get(), today['text'], checkin.get(), checkout.get(), roomType['text'], website.get(), roomRate['text'], totalCharge.get(), roomNum['text'], payments.get(), balance.get(), numGuests.get())
-        self.confirmRes = partial(self.confirmEntry, reservation)  # pairs the action with an argument for below
+        self.fname = Entry(self.sub_window)
+        self.fname.grid(row=0, column=1)
+        self.lname = Entry(self.sub_window)
+        self.lname.grid(row=1, column=1)
+        self.today = Label(self.sub_window, text=str(dt.date.today()))
+        self.today.grid(row=2, column=1)
+        self.checkin = Entry(self.sub_window)
+        self.checkin.grid(row=3, column=1)
+        self.checkout = Entry(self.sub_window)
+        self.checkout.grid(row=4, column=1)
+        self.roomType = Label(self.sub_window, text=str(room.type))
+        self.roomType.grid(row=5, column=1)
+        self.website = Entry(self.sub_window)
+        self.website.grid(row=6, column=1)
+        self.roomRate = Label(self.sub_window, text=roomRates.get(room.type))
+        self.roomRate.grid(row=7, column=1)
+        self.totalCharge = Label(self.sub_window, text=0)
+        self.totalCharge.grid(row=8, column=1)
+        self.roomNum = Label(self.sub_window, text=str(room.num))
+        self.roomNum.grid(row=9, column=1)
+        self.payments = Entry(self.sub_window)
+        self.payments.grid(row=10, column=1)
+        self.balance = Entry(self.sub_window)
+        self.balance.grid(row=11, column=1)
+        self.numGuests = Entry(self.sub_window)
+        self.numGuests.grid(row=12, column=1)
+        self.confirmRes = partial(self.confirmEntry)  # pairs the action with an argument for below
         Button(self.sub_window, text="Confirm", command=self.confirmRes).grid(row=13, column=1)
     
         # If button is clicked, run this method and open window 2
@@ -167,7 +170,6 @@ class Window2:  # This window is for the 7-DAY LIST!
         window = Frame(master)
         self.master = master
         master.title("7-DAY LIST")
-        currRows = 0
         label = Label(window, text="Rooms", background="pink", anchor='w').grid(row=0, column=0)
         Label(window, text="--Occupant--", background="pink").grid(row=0, column=4)
         Label(window, text="Room #", background="pink").grid(row=1, column=0)
@@ -178,21 +180,10 @@ class Window2:  # This window is for the 7-DAY LIST!
         Label(window, text="Friday", background="pink").grid(row=1, column=5)
         Label(window, text="Saturday", background="pink").grid(row=1, column=6)
         Label(window, text="Sunday", background="pink").grid(row=1, column=7)
-        # take the data
-        lst = [(101, 'Raj', 'Mumbai', '', 'Marx.K', 'Marx.K', '', ''),
-            (102, 'Aaryan', 'Pune', 'Bones.B', 'Bones.B', 'Bones.B', 'Bones.B', 'Bones.B'),
-            (103, 'Vaishnavi', 'Mumbai', '', '', 'Lindberg.C', 'Lindberg.C', 'Lindberg.C'),
-            (104, 'Rachna', 'Mumbai', '', '', '', 'Bamford.M', 'Bamford.M'),
-            (105, 'Shubham', 'Delhi', '', '', '', '', 'Meyers.A')]
-        # find total number of rows and
-        # columns in list
-        rows = len(lst)
-        cols = len(lst[0])
-        gridLabels = []
-        for r in range(rows):
-            for c in range(cols):
-                gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
-                currRows = r+2
+        currRows = 2
+        for r in range(len(reservations)):
+            Label(window, text='test', borderwidth=1).grid(row=currRows, column=0)
+            currRows = currRows+1
         # Create labels, entries,buttons
         Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
         Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
@@ -267,9 +258,7 @@ class Reservation:  # reservation object for window3, the RESERVATIONS
         self.cur_stay = [self.First, self.Last, self.CheckIn, self.CheckOut, self.RoomType, self.room_num, self.Rate,
                          self.TotalCharge, self.payments, self.balance]
 
-
 reservations = [Reservation()]
-
 
 class Window3:  # This window is for RESERVATION!
     def __init__(self, master, lst=[Reservation()]):  # mutable default arg is intentional. Ignore warning!
