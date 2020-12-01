@@ -20,58 +20,49 @@ class Guest:
 
 
 class Room: # Please update this class with the info it needs
-    def __init__(self, num, status):
+    def __init__(self, num, _type, status):
         self.num = num
         self.status = status
+        self.type = _type
 
 
 guests = [Guest("Johnny", "Johnson", "555-5555", "0000", "John@email.com", "CA, 1234", "YOOOOOO")]
-rooms = []
-roomData = [{'room':101, 'type':'K', 'status':'Available'},{'room':102, 'type':'DQK', 'status':'Unavailable/Occupied'},{'room':103, 'type':'DQ', 'status':'Unavailable/Dirty'},{'room':104, 'type':'S', 'status':'Available'}]
+rooms = [Room(101, 'K', 'Available'), Room(103, 'DQ', 'Unavailable/Occupied'), Room(104, 'DQK', 'Unavailable/Dirty'), Room(105, 'S', 'Unavailable/Maintenance')]
 roomRates = {'S':10, 'K':20, 'DQK':30, 'DQ':25}
-lst = [(101, 'K', 'Available'),
-            (102, 'K', 'Available'),
-            (103, 'DQ', 'Unavailable/Occupied'),
-            (104, 'DQK', 'Unavailable/Dirty'),
-            (105, 'S', 'Unavailable/Maintenance')]
-
 
 class Window1:  # This window is for all the HOTEL ROOMS
     def __init__(self, master):
-        window = Frame(master)
         self.master = master
+        ListFrame = Frame(master)
         master.title("HOTEL ROOMS")
-        currRows = 0
-        label = Label(window, text="Rooms",anchor='w').grid(row=0, column=0)
-        Label(window, text="Room #").grid(row=1, column=0)
-        Label(window, text="Type").grid(row=1, column=1)
-        Label(window, text="Status").grid(row=1, column=2)
-        # take the data
-        # find total number of rows and
-        # columns in list
-        rows = len(lst)
-        cols = len(lst[0])
-        gridLabels = []
-        for r in range(rows):
-            for c in range(cols):
-                if lst[r][2] != 'Available':
-                    gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
-                else:
-                    if c == 2:
-                        Button(window, text="Available", command=self.button_click6).grid(row=r+2, column=c)
-                    else:
-                        gridLabels.append(Label(window, text=lst[r][c], borderwidth=1).grid(row=r+2, column=c))
-                currRows = r+2
+        label = Label(ListFrame, text="Room List").grid(row=0, column=0, sticky = 'W', pady = 2)
+        Label(ListFrame, text="Room #").grid(row=1, column=0, sticky = 'W', pady = 2)
+        Label(ListFrame, text="Type   ").grid(row=1, column=1, sticky = 'W', pady = 2)
+        Label(ListFrame, text="Status").grid(row=1, column=2, sticky = 'W', pady = 2)
+        currRow = 2
+        for r in range(len(rooms)):
+            if rooms[r].status != 'Available':
+                Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                Label(ListFrame, text=rooms[r].type, borderwidth=1).grid(row=currRow, column=1, sticky = 'W', pady = 2)
+                Label(ListFrame, text=rooms[r].status, borderwidth=1).grid(row=currRow, column=2, sticky = 'W', pady = 2)
+            else:
+                Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                Label(ListFrame, text=rooms[r].type, borderwidth=1).grid(row=currRow, column=1, sticky = 'W', pady = 2)
+                Button(ListFrame, text="Available", command=self.button_click6).grid(row=currRow, column=2, sticky = 'W', pady = 2)
+            currRow = currRow + 1
         # Create labels, entries,buttons
-        Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
-        Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
-        Button(window, text="Reservation", command=self.button_click3).grid(row=currRows+1, column=2)
-        Button(window, text="Housekeeping", command=self.button_click4).grid(row=currRows+1, column=3)
-        Button(window, text="Guest Profiles", command=self.button_click5).grid(row=currRows+1, column=4)
-        # Button(window, text="Current Stay", command=self.button_click6).grid(row=currRows+1, column=5)
-        Button(window, text="Guest Search", command=self.button_click7).grid(row=currRows+1, column=6)
-        Button(window, text="Daily Report", command=self.button_click8).grid(row=currRows+1, column=7)
-        window.pack()
+        ListFrame.pack()
+        NavFrame = Frame(master)
+        Button(NavFrame, text="Room List", command=self.button_click1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+        Button(NavFrame, text="Weekly List", command=self.button_click2).grid(row=currRow, column=1, sticky = 'W', pady = 2)
+        Button(NavFrame, text="Reservation", command=self.button_click3).grid(row=currRow, column=2, sticky = 'W', pady = 2)
+        Button(NavFrame, text="Housekeeping", command=self.button_click4).grid(row=currRow, column=3, sticky = 'W', pady = 2)
+        Button(NavFrame, text="Guest Profiles", command=self.button_click5).grid(row=currRow, column=4, sticky = 'W', pady = 2)
+        Button(NavFrame, text="Guest Search", command=self.button_click7).grid(row=currRow, column=6, sticky = 'W', pady = 2)
+        Button(NavFrame, text="Daily Report", command=self.button_click8).grid(row=currRow, column=7, sticky = 'W', pady = 2)
+        NavFrame.pack()
+        
+
 
     def button_click1(self):
         new_master = tk.Tk()
