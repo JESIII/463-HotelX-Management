@@ -48,7 +48,8 @@ class Window1:  # This window is for all the HOTEL ROOMS
             else:
                 Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
                 Label(ListFrame, text=rooms[r].type, borderwidth=1).grid(row=currRow, column=1, sticky = 'W', pady = 2)
-                Button(ListFrame, text="Available", command=self.button_click6).grid(row=currRow, column=2, sticky = 'W', pady = 2)
+                self.makeRes = partial(self.availableButton, rooms[r])  # pairs the action with an argument for below
+                Button(ListFrame, text="Available", command=self.makeRes).grid(row=currRow, column=2, sticky = 'W', pady = 2)
             currRow = currRow + 1
         # Create labels, entries,buttons
         ListFrame.pack()
@@ -77,7 +78,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
     def button_click3(self):
         new_master = tk.Tk()
         self.master.destroy()
-        Window3(new_master)
+        Window3(new_master, reservations)
 
     def button_click4(self):
         new_master = tk.Tk()
@@ -103,6 +104,61 @@ class Window1:  # This window is for all the HOTEL ROOMS
         new_master = tk.Tk()
         self.master.destroy()
         Window8(new_master)
+    def confirmEntry(self, reservation):
+        reservations.append(reservation)
+        for x in range(len(rooms)):
+            if str(rooms[x].num) == reservation.room_num:
+                rooms[x].status = 'Unavailable/Occupied'
+        new_master = tk.Tk()
+        self.master.destroy()
+        self.sub_window.destroy()
+        Window1(new_master)
+    def availableButton(self, room):
+        self.sub_window = tk.Tk()
+        self.sub_window.title('Make Reservation')
+        Label(self.sub_window, text='First Name').grid(row=0, column=0)
+        Label(self.sub_window, text='Last Name').grid(row=1, column=0)
+        Label(self.sub_window, text='Date Made').grid(row=2, column=0)
+        Label(self.sub_window, text='Checkin').grid(row=3, column=0)
+        Label(self.sub_window, text='Checkout').grid(row=4, column=0)
+        Label(self.sub_window, text='Room Type').grid(row=5, column=0)
+        Label(self.sub_window, text='Website').grid(row=6, column=0)
+        Label(self.sub_window, text='Rate').grid(row=7, column=0)
+        Label(self.sub_window, text='Total Charge').grid(row=8, column=0)
+        Label(self.sub_window, text='Room Num').grid(row=9, column=0)
+        Label(self.sub_window, text='Payments').grid(row=10, column=0)
+        Label(self.sub_window, text='Balance').grid(row=11, column=0)
+        Label(self.sub_window, text='Number of Guests').grid(row=12, column=0)
+        fname = Entry(self.sub_window)
+        fname.grid(row=0, column=1)
+        lname = Entry(self.sub_window)
+        lname.grid(row=1, column=1)
+        today = Label(self.sub_window, text=str(dt.date.today()))
+        today.grid(row=2, column=1)
+        checkin = Entry(self.sub_window)
+        checkin.grid(row=3, column=1)
+        checkout = Entry(self.sub_window)
+        checkout.grid(row=4, column=1)
+        roomType = Label(self.sub_window, text=str(room.type))
+        roomType.grid(row=5, column=1)
+        website = Entry(self.sub_window)
+        website.grid(row=6, column=1)
+        roomRate = Label(self.sub_window, text=roomRates.get(room.type))
+        roomRate.grid(row=7, column=1)
+        totalCharge = Entry(self.sub_window)
+        totalCharge.grid(row=8, column=1)
+        roomNum = Label(self.sub_window, text=str(room.num))
+        roomNum.grid(row=9, column=1)
+        payments = Entry(self.sub_window)
+        payments.grid(row=10, column=1)
+        balance = Entry(self.sub_window)
+        balance.grid(row=11, column=1)
+        numGuests = Entry(self.sub_window)
+        numGuests.grid(row=12, column=1)
+        reservation = Reservation(fname.get(), lname.get(), today['text'], checkin.get(), checkout.get(), roomType['text'], website.get(), roomRate['text'], totalCharge.get(), roomNum['text'], payments.get(), balance.get(), numGuests.get())
+        self.confirmRes = partial(self.confirmEntry, reservation)  # pairs the action with an argument for below
+        Button(self.sub_window, text="Confirm", command=self.confirmRes).grid(row=13, column=1)
+    
         # If button is clicked, run this method and open window 2
 
 
