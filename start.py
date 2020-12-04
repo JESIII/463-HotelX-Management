@@ -532,9 +532,9 @@ class Window4:  # This window is for HOUSEKEEPING!
             for c in range(cols):
                 gridLabels.append(Label(window, text=self.lst[r].variableArray[c], borderwidth=1).grid(row=r+2, column=c))
                 if self.check_readiness(self.lst[r].variableArray):
-                    Label(window, text="True", borderwidth=1).grid(row=r+2, column=13)
+                    Label(window, text="Available", borderwidth=1).grid(row=r+2, column=13)
                 else:
-                    Label(window, text="False", borderwidth=1).grid(row=r + 2, column=13)
+                    Label(window, text="Unavailable", borderwidth=1).grid(row=r + 2, column=13)
                 # button for delete
                 self.delete_with_r = partial(self.button_click_delete, r)  # pairs the action with an argument for below
                 Button(window, text="Delete", command=self.delete_with_r).grid(row=r + 2, column=11)
@@ -556,7 +556,7 @@ class Window4:  # This window is for HOUSEKEEPING!
 
     def check_readiness(self, reservation_array):
         for j in reservation_array:
-            if not reservation_array[j]:
+            if not j:
                 return False
         return True
 
@@ -577,26 +577,26 @@ class Window4:  # This window is for HOUSEKEEPING!
         self.entry_3 = Entry()
         self.entry_3.grid(row=2, column=0)
 
-        self.entry_4 = Entry()
-        self.entry_4.grid(row=3, column=0)
+        self.check_box_unoccupied = tk.IntVar()
+        Checkbutton(self.sub_window, text="Unoccupied", variable=self.check_box_unoccupied).grid(row=3, column=0, sticky='W')
 
-        self.entry_5 = Entry()
-        self.entry_5.grid(row=4, column=0)
+        self.check_box_bathroom = tk.IntVar()
+        Checkbutton(self.sub_window, text="Bathroom", variable=self.check_box_bathroom).grid(row=4, column=0, sticky='W')
 
-        self.entry_6 = Entry()
-        self.entry_6.grid(row=5, column=0)
+        self.check_box_towels = tk.IntVar()
+        Checkbutton(self.sub_window, text="Towels", variable=self.check_box_towels).grid(row=5, column=0, sticky='W')
 
-        self.entry_7 = Entry()
-        self.entry_7.grid(row=6, column=0)
+        self.check_box_sheets = tk.IntVar()
+        Checkbutton(self.sub_window, text="Sheets", variable=self.check_box_sheets).grid(row=6, column=0, sticky='W')
 
-        self.entry_8 = Entry()
-        self.entry_8.grid(row=7, column=0)
+        self.check_box_vacuum = tk.IntVar()
+        Checkbutton(self.sub_window, text="Vacuum", variable=self.check_box_vacuum).grid(row=7, column=0, sticky='W')
 
-        self.entry_9 = Entry()
-        self.entry_9.grid(row=8, column=0)
+        self.check_box_dusting = tk.IntVar()
+        Checkbutton(self.sub_window, text="Dusting", variable=self.check_box_dusting).grid(row=8, column=0, sticky='W')
 
-        self.entry_10 = Entry()
-        self.entry_10.grid(row=9, column=0)
+        self.check_box_electronics = tk.IntVar()
+        Checkbutton(self.sub_window, text="Electronics", variable=self.check_box_electronics).grid(row=9, column=0, sticky='W')
 
         self.temp_array = []
 
@@ -604,13 +604,13 @@ class Window4:  # This window is for HOUSEKEEPING!
         self.temp_array.append(self.entry_1.get())
         self.temp_array.append(self.entry_2.get())
         self.temp_array.append(self.entry_3.get())
-        self.temp_array.append(self.entry_4.get())
-        self.temp_array.append(self.entry_5.get())
-        self.temp_array.append(self.entry_6.get())
-        self.temp_array.append(self.entry_7.get())
-        self.temp_array.append(self.entry_8.get())
-        self.temp_array.append(self.entry_9.get())
-        self.temp_array.append(self.entry_10.get())
+        self.temp_array.append(self.check_box_unoccupied.get())
+        self.temp_array.append(self.check_box_bathroom.get())
+        self.temp_array.append(self.check_box_towels.get())
+        self.temp_array.append(self.check_box_sheets.get())
+        self.temp_array.append(self.check_box_vacuum.get())
+        self.temp_array.append(self.check_box_dusting.get())
+        self.temp_array.append(self.check_box_electronics.get())
 
     def button_click_add(self):
         self.entry()
