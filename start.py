@@ -30,7 +30,7 @@ class Room: # Please update this class with the info it needs
 
 
 guests = [Guest("Johnny", "Johnson", "555-5555", "0000", "John@email.com", "CA, 1234", "YOOOOOO")]
-rooms = [Room(101, 'K', 'Available'), Room(103, 'DQ', 'Unavailable/Occupied'), Room(104, 'DQK', 'Unavailable/Dirty'), Room(105, 'S', 'Unavailable/Maintenance')]
+rooms = [Room(101, 'K', 'Available'), Room(103, 'DQ', 'Unavailable/Occupied'), Room(104, 'DQK', 'Unavailable/Dirty'), Room(105, 'S', 'Unavailable/Maintenance'),Room(106, 'S', 'Unavailable/Occupied')]
 roomRates = {'S':10, 'K':20, 'DQK':30, 'DQ':25}
 
 class Window1:  # This window is for all the HOTEL ROOMS
@@ -173,17 +173,52 @@ class Window2:  # This window is for the 7-DAY LIST!
         label = Label(window, text="Rooms", background="pink", anchor='w').grid(row=0, column=0)
         Label(window, text="--Occupant--", background="pink").grid(row=0, column=4)
         Label(window, text="Room #", background="pink").grid(row=1, column=0)
-        Label(window, text="Monday", background="pink").grid(row=1, column=1)
-        Label(window, text="Tuesday", background="pink").grid(row=1, column=2)
-        Label(window, text="Wednesday", background="pink").grid(row=1, column=3)
-        Label(window, text="Thursday", background="pink").grid(row=1, column=4)
-        Label(window, text="Friday", background="pink").grid(row=1, column=5)
-        Label(window, text="Saturday", background="pink").grid(row=1, column=6)
-        Label(window, text="Sunday", background="pink").grid(row=1, column=7)
+        # Label(window, text="Monday", background="pink").grid(row=1, column=1)
+        # Label(window, text="Tuesday", background="pink").grid(row=1, column=2)
+        # Label(window, text="Wednesday", background="pink").grid(row=1, column=3)
+        # Label(window, text="Thursday", background="pink").grid(row=1, column=4)
+        # Label(window, text="Friday", background="pink").grid(row=1, column=5)
+        # Label(window, text="Saturday", background="pink").grid(row=1, column=6)
+        # Label(window, text="Sunday", background="pink").grid(row=1, column=7)
         currRows = 2
-        for r in range(len(reservations)):
-            Label(window, text='test', borderwidth=1).grid(row=currRows, column=0)
-            currRows = currRows+1
+
+        #Generate Title Names
+        dayIndex = [] #so i can think less lol. to be reused in the name insertion.
+        for x in range(7):
+            #for the numbers 0-6, if today + the number is 0, 
+            if (dt.date.today() + dt.timedelta(days=x)).weekday() == 0:
+                Label(window, text="Monday", background="pink").grid(row=1, column=x+1)
+            elif (dt.date.today() + dt.timedelta(days=x)).weekday() == 1:
+                Label(window, text="Tuesday", background="pink").grid(row=1, column=x+1)
+            elif (dt.date.today() + dt.timedelta(days=x)).weekday() == 2:
+                Label(window, text="Wednesday", background="pink").grid(row=1, column=x+1)
+            elif (dt.date.today() + dt.timedelta(days=x)).weekday() == 3:
+                Label(window, text="Thursday", background="pink").grid(row=1, column=x+1)
+            elif (dt.date.today() + dt.timedelta(days=x)).weekday() == 4:
+                Label(window, text="Friday", background="pink").grid(row=1, column=x+1)
+            elif (dt.date.today() + dt.timedelta(days=x)).weekday() == 5:
+                Label(window, text="Saturday", background="pink").grid(row=1, column=x+1)
+            elif (dt.date.today() + dt.timedelta(days=x)).weekday() == 6:
+                Label(window, text="Sunday", background="pink").grid(row=1, column=x+1)
+            dayIndex.append(x+1)
+        #Insert Room List Vertically in Column 0
+        for n in range(len(rooms)):
+            Label(window, text=rooms[n].num).grid(row=currRows+n, column=0)
+            for r in reservations:
+                #Get # of days Between Checkin and Checkout
+                sdate = dt.datetime.strptime(r.CheckIn, '%Y-%m-%d')
+                edate = dt.datetime.strptime(r.CheckOut, '%Y-%m-%d')
+                delta = edate - sdate
+                #For each date between the check in and check out
+                for j in range(delta.days + 1): #Remove +1 if we aren't including checkout day
+                    day = sdate + timedelta(days=j)
+                    #if the room for the current reservation is the room we are currently filling the row for
+                    if(str(rooms[n].num) == r.room_num):
+                        #then put the guest name that corresponds that room vertically and the weekday # horizontally
+                        Label(window, text=(r.First + " " + r.Last)).grid(row=currRows+n, column=dayIndex[j])
+                        #print(day.weekday()+1)
+            #Label(window, text='test', borderwidth=1).grid(row=currRows, column=0)
+            currRows = currRows+len(rooms)
         # Create labels, entries,buttons
         Button(window, text="Room List", command=self.button_click1).grid(row=currRows+1, column=0)
         Button(window, text="Weekly List", command=self.button_click2).grid(row=currRows+1, column=1)
@@ -258,8 +293,8 @@ class Reservation:  # reservation object for window3, the RESERVATIONS
         self.cur_stay = [self.First, self.Last, self.CheckIn, self.CheckOut, self.RoomType, self.room_num, self.Rate,
                          self.TotalCharge, self.payments, self.balance]
 
-reservations = [Reservation()]
-
+reservations = []
+reservations.append(Reservation('John','Scales','2020-12-03','2020-12-03','2020-12-06', 'K', 'idk.com', '10', '400', '106', '0', '0', 1))
 class Window3:  # This window is for RESERVATION!
     def __init__(self, master, lst=[Reservation()]):  # mutable default arg is intentional. Ignore warning!
         window = Frame(master)
