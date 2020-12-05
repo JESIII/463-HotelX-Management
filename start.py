@@ -104,22 +104,23 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Window6(new_master)
 
     def clickRoom(self, room):
-        for r in reservations:
+        for index, r in enumerate(reservations):
             #if str(r.room_num) == str(room.num): #not needed
             if dt.date.today() < dt.datetime.strptime(r.CheckOut, '%Y-%m-%d').date() and dt.date.today() > dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
                 new_master = tk.Tk()
                 self.master.destroy()
-                Window6(new_master, r) #passes reservation to window 6 for the current occupant
+                Window6(new_master, index) #passes reservation to window 6 for the current occupant
                 print('here1')
             elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d'):
                 new_master = tk.Tk()
                 self.master.destroy()
-                Window6(new_master, r) #passes reservation to window 6 for the reservation
+                Window6(new_master, index) #passes reservation to window 6 for the reservation
                 print('here2')
             else:
                 new_master = tk.Tk()
                 self.master.destroy()
-                Window6(new_master, Reservation()) #passes empty reservation to window 6
+                reservations.append(Reservation())
+                Window6(new_master, index+1) #passes empty reservation to window 6
                 print('here3')
 
     def button_click7(self):
@@ -221,13 +222,6 @@ class Window2:  # This window is for the 7-DAY LIST!
         label = Label(window, text="Rooms", background="pink", anchor='w').grid(row=0, column=0)
         Label(window, text="--Occupant--", background="pink").grid(row=0, column=4)
         Label(window, text="Room #", background="pink").grid(row=1, column=0)
-        # Label(window, text="Monday", background="pink").grid(row=1, column=1)
-        # Label(window, text="Tuesday", background="pink").grid(row=1, column=2)
-        # Label(window, text="Wednesday", background="pink").grid(row=1, column=3)
-        # Label(window, text="Thursday", background="pink").grid(row=1, column=4)
-        # Label(window, text="Friday", background="pink").grid(row=1, column=5)
-        # Label(window, text="Saturday", background="pink").grid(row=1, column=6)
-        # Label(window, text="Sunday", background="pink").grid(row=1, column=7)
         currRows = 2
 
         #Generate Title Names
@@ -305,26 +299,24 @@ class Window2:  # This window is for the 7-DAY LIST!
         Window5(new_master, -1)
 
     def button_click6(self, room):
-        for r in reservations:
+        for index, r in enumerate(reservations):
             #if str(r.room_num) == str(room.num): #not needed
             if dt.date.today() < dt.datetime.strptime(r.CheckOut, '%Y-%m-%d').date() and dt.date.today() > dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
                 new_master = tk.Tk()
                 self.master.destroy()
-                Window6(new_master, r) #passes reservation to window 6 for the current occupant
+                Window6(new_master, index) #passes reservation to window 6 for the current occupant
                 print('here1')
             elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d'):
                 new_master = tk.Tk()
                 self.master.destroy()
-                Window6(new_master, r) #passes reservation to window 6 for the reservation
+                Window6(new_master, index) #passes reservation to window 6 for the reservation
                 print('here2')
             else:
                 new_master = tk.Tk()
                 self.master.destroy()
-                Window6(new_master, Reservation()) #passes empty reservation to window 6
+                reservations.append(Reservation())
+                Window6(new_master, index+1) #passes empty reservation to window 6
                 print('here3')
-        # new_master = tk.Tk()
-        # self.master.destroy()
-        # Window6(new_master)
 
     def button_click7(self):
         new_master = tk.Tk()
