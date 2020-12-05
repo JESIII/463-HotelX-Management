@@ -357,7 +357,7 @@ class Reservation:  # reservation object for window3, the RESERVATIONS
 reservations = []
 reservations.append(Reservation('John','Scales','2020-12-03','2020-12-03','2020-12-06', 'K', 'idk.com', '10', '400', '106', '0', '0', 1))
 class Window3:  # This window is for RESERVATION!
-    def __init__(self, master, lst=[Reservation()]):  # mutable default arg is intentional. Ignore warning!
+    def __init__(self, master, lst= reservations ):  # mutable default arg is intentional. Ignore warning!
         window = Frame(master)
         self.master = master
         master.title("RESERVATIONS")
