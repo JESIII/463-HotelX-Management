@@ -42,14 +42,20 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Label(ListFrame, text="Room #").grid(row=1, column=0, sticky = 'W', pady = 2)
         Label(ListFrame, text="Type   ").grid(row=1, column=1, sticky = 'W', pady = 2)
         Label(ListFrame, text="Status").grid(row=1, column=2, sticky = 'W', pady = 2)
+        Label(ListFrame, text="Edit").grid(row=1, column=3, sticky = 'W', pady = 2)
         currRow = 2
         for r in range(len(rooms)):
             if rooms[r].status != 'Available':
-                Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                Button(ListFrame, text=rooms[r].num, command=self.button_click6).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                #Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
                 Label(ListFrame, text=rooms[r].type, borderwidth=1).grid(row=currRow, column=1, sticky = 'W', pady = 2)
                 Label(ListFrame, text=rooms[r].status, borderwidth=1).grid(row=currRow, column=2, sticky = 'W', pady = 2)
+                if(rooms[r].status != 'Unavailable/Occupied'):
+                    self.makeAvailableBtn = partial(self.makeAvailable, rooms[r])  # pairs the action with an argument for below
+                    Button(ListFrame, text="Make Available", command=self.makeAvailableBtn).grid(row=currRow, column=3, sticky = 'W', pady = 2)
             else:
-                Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                Button(ListFrame, text=rooms[r].num, command=self.button_click6).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                #Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
                 Label(ListFrame, text=rooms[r].type, borderwidth=1).grid(row=currRow, column=1, sticky = 'W', pady = 2)
                 self.makeRes = partial(self.availableButton, rooms[r])  # pairs the action with an argument for below
                 Button(ListFrame, text="Available", command=self.makeRes).grid(row=currRow, column=2, sticky = 'W', pady = 2)
@@ -61,8 +67,6 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Button(NavFrame, text="Weekly List", command=self.button_click2).grid(row=currRow, column=1, sticky = 'W', pady = 2)
         Button(NavFrame, text="Reservation", command=self.button_click3).grid(row=currRow, column=2, sticky = 'W', pady = 2)
         Button(NavFrame, text="Housekeeping", command=self.button_click4).grid(row=currRow, column=3, sticky = 'W', pady = 2)
-        Button(NavFrame, text="Guest Profiles", command=self.button_click5).grid(row=currRow, column=4, sticky = 'W', pady = 2)
-        Button(NavFrame, text="Current Stay", command=self.button_click6).grid(row=currRow, column=5, sticky = 'W', pady = 2)
         Button(NavFrame, text="Guest Search", command=self.button_click7).grid(row=currRow, column=6, sticky = 'W', pady = 2)
         Button(NavFrame, text="Daily Report", command=self.button_click8).grid(row=currRow, column=7, sticky = 'W', pady = 2)
         NavFrame.pack()
@@ -106,6 +110,28 @@ class Window1:  # This window is for all the HOTEL ROOMS
         new_master = tk.Tk()
         self.master.destroy()
         Window8(new_master)
+    def confirmAvailability(self, room):
+        for r in rooms:
+            if room.num == r.num:
+                r.status = 'Available'
+        new_master = tk.Tk()
+        self.master.destroy()
+        self.sub_window.destroy()
+        Window1(new_master)
+    def declineAvailability(self):
+        new_master = tk.Tk()
+        self.master.destroy()
+        self.sub_window.destroy()
+        Window1(new_master)
+    def makeAvailable(self, room):
+        self.sub_window = tk.Tk()
+        self.sub_window.title('Are you sure?')
+        Label(self.sub_window, text="This room is " + room.status.split('/')[1]).grid(row=0, column=0, sticky = 'W', pady = 2)
+        Label(self.sub_window, text='Are you sure you want to make it available?').grid(row=1, column=0, sticky = 'W', pady = 2)
+        self.confirmAvailabilityBtn = partial(self.confirmAvailability, room)  # pairs the action with an argument for below
+        Button(self.sub_window, text="Yes", command=self.confirmAvailabilityBtn).grid(row=2, column=0, sticky = 'W', pady = 2)
+        self.declineAvailabilityBtn = partial(self.declineAvailability)  # pairs the action with an argument for below
+        Button(self.sub_window, text="No", command=self.declineAvailabilityBtn).grid(row=2, column=1, sticky = 'W', pady = 2)
     def confirmEntry(self):
         total = (dt.datetime.strptime(self.checkout.get(), '%Y-%m-%d') - dt.datetime.strptime(self.checkin.get(), '%Y-%m-%d')).days * self.roomRate['text']
         reservation = Reservation(self.fname.get(), self.lname.get(), self.today['text'], self.checkin.get(), self.checkout.get(), self.roomType['text'], self.website.get(), self.roomRate['text'], total, self.roomNum['text'], self.payments.get(), self.balance.get(), self.numGuests.get())
