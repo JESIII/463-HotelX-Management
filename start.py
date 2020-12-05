@@ -62,6 +62,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Button(NavFrame, text="Reservation", command=self.button_click3).grid(row=currRow, column=2, sticky = 'W', pady = 2)
         Button(NavFrame, text="Housekeeping", command=self.button_click4).grid(row=currRow, column=3, sticky = 'W', pady = 2)
         Button(NavFrame, text="Guest Profiles", command=self.button_click5).grid(row=currRow, column=4, sticky = 'W', pady = 2)
+        Button(NavFrame, text="Current Stay", command=self.button_click6).grid(row=currRow, column=5, sticky = 'W', pady = 2)
         Button(NavFrame, text="Guest Search", command=self.button_click7).grid(row=currRow, column=6, sticky = 'W', pady = 2)
         Button(NavFrame, text="Daily Report", command=self.button_click8).grid(row=currRow, column=7, sticky = 'W', pady = 2)
         NavFrame.pack()
