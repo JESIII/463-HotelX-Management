@@ -466,11 +466,7 @@ class Window3:  # This window is for RESERVATION!
 
     def button_click_convert_to_check_in(self, r):
         self.button_edit_convert(r)
-
-        # TODO
-        # Next, pass self.list[r] to button_click6 when feature is implemented.
-        # Right now, the call has no parameter to accept this.
-        self.button_click6()
+        self.button_click6(r)
 
     def button_edit_enter(self, r):
         self.button_click_enter()
@@ -526,10 +522,10 @@ class Window3:  # This window is for RESERVATION!
         self.master.destroy()
         Window5(new_master, -1)
 
-    def button_click6(self):
+    def button_click6(self, r=-1):
         new_master = tk.Tk()
         self.master.destroy()
-        Window6(new_master)
+        Window6(new_master, r)
 
     def button_click7(self):
         new_master = tk.Tk()
