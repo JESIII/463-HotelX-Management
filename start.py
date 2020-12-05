@@ -104,8 +104,6 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Window6(new_master)
 
     def clickRoom(self, room):
-
-        """
         for index, r in enumerate(reservations):
             #if str(r.room_num) == str(room.num): #not needed
             if dt.date.today() < dt.datetime.strptime(r.CheckOut, '%Y-%m-%d').date() and dt.date.today() > dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
@@ -124,7 +122,6 @@ class Window1:  # This window is for all the HOTEL ROOMS
                 reservations.append(Reservation())
                 Window6(new_master, index+1) #passes empty reservation to window 6
                 print('here3')
-        """
 
     def button_click7(self):
         new_master = tk.Tk()
