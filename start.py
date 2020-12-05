@@ -867,18 +867,31 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
                     Label(window, text=lst[r][c], borderwidth=1).grid(row=r+1, column=c)
                     currRows = r+1
 
+            self.entries = []
+            self.has_name = True
             # Button for guest name
-            guest_full_name = guests[reservations[res_num].guest_num].f_name + " " + guests[reservations[res_num].guest_num].l_name
-            Button(window, text=guest_full_name, command=self.button_guest_info).grid(row=2, column=0)
+            if reservations[res_num].guest_num == -1:
+                self.has_name = False
+                self.entries.append(Entry(window))
+                self.entries.append(Entry(window))
+                self.entries[0].grid(row=2, column=0)
+                self.entries[0].grid(row=2, column=1)
+            else:
+                guest_full_name = guests[reservations[res_num].guest_num].f_name + " " + guests[reservations[res_num].guest_num].l_name
+                Button(window, text=guest_full_name, command=self.button_guest_info).grid(row=2, column=0)
 
             # Create entries
-            self.entries = []
             for i in range(8):
                 self.entries.append(Entry(window))
                 # Place entries
-                self.entries[i].grid(row=2, column=i+2)
-                # Populate entries with all available reservation information
-                self.entries[i].insert(0, reservations[res_num].cur_stay[i])
+                if self.has_name:
+                    self.entries[i].grid(row=2, column=i+2)
+                    # Populate entries with all available reservation information
+                    self.entries[i].insert(0, reservations[res_num].cur_stay[i])
+                else:
+                    self.entries[i+2].grid(row=2, column=i + 2)
+                    # Populate entries with all available reservation information
+                    self.entries[i+2].insert(0, reservations[res_num].cur_stay[i])
             # Button to update reservation information
             Button(window, text="Update Reservation info", command=self.button_update_reservation).grid(row=3, column=0)
             # Check-in and check-out buttons
@@ -899,6 +912,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
         for r in rooms:
             if r.num is reservations[self.res_num].room_num:
                 r.status = "Unavailable/Occupied"
+        guests.append(Guest(self.entries[0].get(), self.entries[1].get(), "", "", "", "", ""))
 
     def button_check_out(self):
         for r in rooms:
@@ -911,21 +925,39 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
         Window5(new_master, reservations[self.res_num].guest_num)
 
     def button_update_reservation(self):
-        reservations[self.res_num].CheckIn = self.entries[0].get()
-        reservations[self.res_num].variableArray[3] = self.entries[0].get()
-        reservations[self.res_num].CheckOut = self.entries[1].get()
-        reservations[self.res_num].variableArray[4] = self.entries[1].get()
-        reservations[self.res_num].RoomType = self.entries[2].get()
-        reservations[self.res_num].variableArray[5] = self.entries[2].get()
-        reservations[self.res_num].room_num = self.entries[3].get()
-        reservations[self.res_num].Rate = self.entries[4].get()
-        reservations[self.res_num].variableArray[7] = self.entries[4].get()
-        reservations[self.res_num].TotalCharge = self.entries[5].get()
-        reservations[self.res_num].variableArray[8] = self.entries[5].get()
-        reservations[self.res_num].payments = self.entries[6].get()
-        reservations[self.res_num].balance = self.entries[7].get()
-        for i in range(8):
-            reservations[self.res_num].cur_stay[i] = self.entries[i].get()
+        if self.has_name:
+            
+            reservations[self.res_num].CheckIn = self.entries[2].get()
+            reservations[self.res_num].variableArray[3] = self.entries[2].get()
+            reservations[self.res_num].CheckOut = self.entries[3].get()
+            reservations[self.res_num].variableArray[4] = self.entries[3].get()
+            reservations[self.res_num].RoomType = self.entries[4].get()
+            reservations[self.res_num].variableArray[5] = self.entries[4].get()
+            reservations[self.res_num].room_num = self.entries[5].get()
+            reservations[self.res_num].Rate = self.entries[6].get()
+            reservations[self.res_num].variableArray[7] = self.entries[6].get()
+            reservations[self.res_num].TotalCharge = self.entries[7].get()
+            reservations[self.res_num].variableArray[8] = self.entries[7].get()
+            reservations[self.res_num].payments = self.entries[8].get()
+            reservations[self.res_num].balance = self.entries[9].get()
+            for i in range(8):
+                reservations[self.res_num].cur_stay[i] = self.entries[i].get()
+        else:
+            reservations[self.res_num].CheckIn = self.entries[0].get()
+            reservations[self.res_num].variableArray[3] = self.entries[0].get()
+            reservations[self.res_num].CheckOut = self.entries[1].get()
+            reservations[self.res_num].variableArray[4] = self.entries[1].get()
+            reservations[self.res_num].RoomType = self.entries[2].get()
+            reservations[self.res_num].variableArray[5] = self.entries[2].get()
+            reservations[self.res_num].room_num = self.entries[3].get()
+            reservations[self.res_num].Rate = self.entries[4].get()
+            reservations[self.res_num].variableArray[7] = self.entries[4].get()
+            reservations[self.res_num].TotalCharge = self.entries[5].get()
+            reservations[self.res_num].variableArray[8] = self.entries[5].get()
+            reservations[self.res_num].payments = self.entries[6].get()
+            reservations[self.res_num].balance = self.entries[7].get()
+            for i in range(8):
+                reservations[self.res_num].cur_stay[i] = self.entries[i].get()
 
     def button_click1(self):
         new_master = tk.Tk()
