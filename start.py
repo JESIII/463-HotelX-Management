@@ -46,7 +46,8 @@ class Window1:  # This window is for all the HOTEL ROOMS
         currRow = 2
         for r in range(len(rooms)):
             if rooms[r].status != 'Available':
-                Button(ListFrame, text=rooms[r].num, command=self.button_click6).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                self.clickRoomBtn = partial(self.clickRoom, rooms[r])
+                Button(ListFrame, text=rooms[r].num, command=self.clickRoomBtn).grid(row=currRow, column=0, sticky = 'W', pady = 2)
                 #Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
                 Label(ListFrame, text=rooms[r].type, borderwidth=1).grid(row=currRow, column=1, sticky = 'W', pady = 2)
                 Label(ListFrame, text=rooms[r].status, borderwidth=1).grid(row=currRow, column=2, sticky = 'W', pady = 2)
@@ -54,7 +55,8 @@ class Window1:  # This window is for all the HOTEL ROOMS
                     self.makeAvailableBtn = partial(self.makeAvailable, rooms[r])  # pairs the action with an argument for below
                     Button(ListFrame, text="Make Available", command=self.makeAvailableBtn).grid(row=currRow, column=3, sticky = 'W', pady = 2)
             else:
-                Button(ListFrame, text=rooms[r].num, command=self.button_click6).grid(row=currRow, column=0, sticky = 'W', pady = 2)
+                self.clickRoomBtn = partial(self.clickRoom, rooms[r])
+                Button(ListFrame, text=rooms[r].num, command=self.clickRoomBtn).grid(row=currRow, column=0, sticky = 'W', pady = 2)
                 #Label(ListFrame, text=rooms[r].num, borderwidth=1).grid(row=currRow, column=0, sticky = 'W', pady = 2)
                 Label(ListFrame, text=rooms[r].type, borderwidth=1).grid(row=currRow, column=1, sticky = 'W', pady = 2)
                 self.makeRes = partial(self.availableButton, rooms[r])  # pairs the action with an argument for below
@@ -100,6 +102,25 @@ class Window1:  # This window is for all the HOTEL ROOMS
         new_master = tk.Tk()
         self.master.destroy()
         Window6(new_master)
+
+    def clickRoom(self, room):
+        for r in reservations:
+            #if str(r.room_num) == str(room.num): #not needed
+            if dt.date.today() < dt.datetime.strptime(r.CheckOut, '%Y-%m-%d').date() and dt.date.today() > dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
+                new_master = tk.Tk()
+                self.master.destroy()
+                Window6(new_master, r) #passes reservation to window 6 for the current occupant
+                print('here1')
+            elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d'):
+                new_master = tk.Tk()
+                self.master.destroy()
+                Window6(new_master, r) #passes reservation to window 6 for the reservation
+                print('here2')
+            else:
+                new_master = tk.Tk()
+                self.master.destroy()
+                Window6(new_master, Reservation()) #passes empty reservation to window 6
+                print('here3')
 
     def button_click7(self):
         new_master = tk.Tk()
