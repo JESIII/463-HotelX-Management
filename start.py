@@ -230,7 +230,8 @@ class Window2:  # This window is for the 7-DAY LIST!
             dayIndex.append(x+1)
         #Insert Room List Vertically in Column 0
         for n in range(len(rooms)):
-            Label(window, text=rooms[n].num).grid(row=currRows+n, column=0)
+            self.clickRoom = partial(self.button_click6, rooms[n]) 
+            Button(window, text=rooms[n].num, command=self.clickRoom).grid(row=currRows+n, column=0)
             for r in reservations:
                 #Get # of days Between Checkin and Checkout
                 sdate = dt.datetime.strptime(r.CheckIn, '%Y-%m-%d')
@@ -282,10 +283,27 @@ class Window2:  # This window is for the 7-DAY LIST!
         self.master.destroy()
         Window5(new_master, -1)
 
-    def button_click6(self):
-        new_master = tk.Tk()
-        self.master.destroy()
-        Window6(new_master)
+    def button_click6(self, room):
+        for r in reservations:
+            #if str(r.room_num) == str(room.num): #not needed
+            if dt.date.today() < dt.datetime.strptime(r.CheckOut, '%Y-%m-%d').date() and dt.date.today() > dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
+                new_master = tk.Tk()
+                self.master.destroy()
+                Window6(new_master, r) #passes reservation to window 6 for the current occupant
+                print('here1')
+            elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d'):
+                new_master = tk.Tk()
+                self.master.destroy()
+                Window6(new_master, r) #passes reservation to window 6 for the reservation
+                print('here2')
+            else:
+                new_master = tk.Tk()
+                self.master.destroy()
+                Window6(new_master, Reservation()) #passes empty reservation to window 6
+                print('here3')
+        # new_master = tk.Tk()
+        # self.master.destroy()
+        # Window6(new_master)
 
     def button_click7(self):
         new_master = tk.Tk()
