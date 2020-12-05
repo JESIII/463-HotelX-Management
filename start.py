@@ -29,7 +29,7 @@ class Room: # Please update this class with the info it needs
         self.type = _type
 
 
-guests = [Guest("Johnny", "Johnson", "555-5555", "0000", "John@email.com", "CA, 1234", "YOOOOOO")]
+guests = [Guest("Johnny", "Johnson", "555-5555", "0000", "John@email.com", "CA, 1234", "YOOOOOO"), Guest("Johnny", "Johnson", "555-5555", "0000", "John@email.com", "CA, 1234", "YOOOOOO")]
 rooms = [Room(101, 'K', 'Available'), Room(103, 'DQ', 'Unavailable/Occupied'), Room(104, 'DQK', 'Unavailable/Dirty'), Room(105, 'S', 'Unavailable/Maintenance'),Room(106, 'S', 'Unavailable/Occupied')]
 roomRates = {'S':10, 'K':20, 'DQK':30, 'DQ':25}
 
@@ -104,6 +104,8 @@ class Window1:  # This window is for all the HOTEL ROOMS
         Window6(new_master)
 
     def clickRoom(self, room):
+
+        """
         for index, r in enumerate(reservations):
             #if str(r.room_num) == str(room.num): #not needed
             if dt.date.today() < dt.datetime.strptime(r.CheckOut, '%Y-%m-%d').date() and dt.date.today() > dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
@@ -122,6 +124,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
                 reservations.append(Reservation())
                 Window6(new_master, index+1) #passes empty reservation to window 6
                 print('here3')
+        """
 
     def button_click7(self):
         new_master = tk.Tk()
@@ -906,7 +909,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
                 self.entries.append(Entry(window))
                 self.entries.append(Entry(window))
                 self.entries[0].grid(row=2, column=0)
-                self.entries[0].grid(row=2, column=1)
+                self.entries[1].grid(row=2, column=1)
             else:
                 guest_full_name = guests[reservations[res_num].guest_num].f_name + " " + guests[reservations[res_num].guest_num].l_name
                 Button(window, text=guest_full_name, command=self.button_guest_info).grid(row=2, column=0)
@@ -918,11 +921,11 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
                 if self.has_name:
                     self.entries[i].grid(row=2, column=i+2)
                     # Populate entries with all available reservation information
-                    self.entries[i].insert(0, reservations[res_num].cur_stay[i])
+                    self.entries[i].insert(0, reservations[res_num].cur_stay[i+2])
                 else:
-                    self.entries[i+2].grid(row=2, column=i + 2)
+                    self.entries[i+2].grid(row=2, column=i+2)
                     # Populate entries with all available reservation information
-                    self.entries[i+2].insert(0, reservations[res_num].cur_stay[i])
+                    self.entries[i+2].insert(0, reservations[res_num].cur_stay[i+2])
             # Button to update reservation information
             Button(window, text="Update Reservation info", command=self.button_update_reservation).grid(row=3, column=0)
             # Check-in and check-out buttons
@@ -944,6 +947,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
             if r.num is reservations[self.res_num].room_num:
                 r.status = "Unavailable/Occupied"
         guests.append(Guest(self.entries[0].get(), self.entries[1].get(), "", "", "", "", ""))
+        reservations[self.res_num].guest_num = len(guests) - 1
 
     def button_check_out(self):
         for r in rooms:
@@ -956,7 +960,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
         Window5(new_master, reservations[self.res_num].guest_num)
 
     def button_update_reservation(self):
-        if self.has_name:
+        if self.has_name == False:
             reservations[self.res_num].First = self.entries[0].get()
             reservations[self.res_num].variableArray[0] = self.entries[0].get()
             reservations[self.res_num].Last = self.entries[1].get()
