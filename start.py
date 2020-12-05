@@ -965,7 +965,10 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
 
     def button_update_reservation(self):
         if self.has_name:
-            
+            reservations[self.res_num].First = self.entries[0].get()
+            reservations[self.res_num].variableArray[0] = self.entries[0].get()
+            reservations[self.res_num].Last = self.entries[1].get()
+            reservations[self.res_num].variableArray[1] = self.entries[1].get()
             reservations[self.res_num].CheckIn = self.entries[2].get()
             reservations[self.res_num].variableArray[3] = self.entries[2].get()
             reservations[self.res_num].CheckOut = self.entries[3].get()
@@ -979,7 +982,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
             reservations[self.res_num].variableArray[8] = self.entries[7].get()
             reservations[self.res_num].payments = self.entries[8].get()
             reservations[self.res_num].balance = self.entries[9].get()
-            for i in range(8):
+            for i in range(10):
                 reservations[self.res_num].cur_stay[i] = self.entries[i].get()
         else:
             reservations[self.res_num].CheckIn = self.entries[0].get()
@@ -996,7 +999,7 @@ class Window6:  # This window is for GUEST'S CURRENT STAY INFO!
             reservations[self.res_num].payments = self.entries[6].get()
             reservations[self.res_num].balance = self.entries[7].get()
             for i in range(8):
-                reservations[self.res_num].cur_stay[i] = self.entries[i].get()
+                reservations[self.res_num].cur_stay[i + 2] = self.entries[i].get()
 
     def button_click1(self):
         new_master = tk.Tk()
