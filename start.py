@@ -111,7 +111,7 @@ class Window1:  # This window is for all the HOTEL ROOMS
                 self.master.destroy()
                 Window6(new_master, index) #passes reservation to window 6 for the current occupant
                 print('here1')
-            elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d'):
+            elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
                 new_master = tk.Tk()
                 self.master.destroy()
                 Window6(new_master, index) #passes reservation to window 6 for the reservation
@@ -306,7 +306,7 @@ class Window2:  # This window is for the 7-DAY LIST!
                 self.master.destroy()
                 Window6(new_master, index) #passes reservation to window 6 for the current occupant
                 print('here1')
-            elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d'):
+            elif dt.date.today() < dt.datetime.strptime(r.CheckIn, '%Y-%m-%d').date():
                 new_master = tk.Tk()
                 self.master.destroy()
                 Window6(new_master, index) #passes reservation to window 6 for the reservation
